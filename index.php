@@ -2,7 +2,7 @@
 
 include("class/Data.php");
 
-$data = new Data();
+$data = new Data("http://mesh.sjr-ol.de/data/nodes.json");
 
 $data->catchData();
 

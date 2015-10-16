@@ -5,16 +5,20 @@ class Data
 
     private $data;
     private $dataRaw;
+    private $url;
 
     /**
      * Data constructor.
+     * @param $url
      */
-    public function __construct()
+    public function __construct($url)
     {
+        $this->url = $url;
     }
 
+
     public function catchData(){
-        $this->dataRaw = file_get_contents("http://mesh.sjr-ol.de/data/nodes.json");
+        $this->dataRaw = file_get_contents($this->url);
         $this->data = json_decode($this->dataRaw,true);
     }
 
@@ -34,6 +38,6 @@ class Data
         return $this->dataRaw;
     }
 
-    
+
 
 }
