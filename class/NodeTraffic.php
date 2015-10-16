@@ -11,6 +11,24 @@ class NodeTraffic
     private $tx;
 
     /**
+     * NodeTraffic constructor.
+     * @param $mgmtTx
+     * @param $forward
+     * @param $Rx
+     * @param $mgmtRx
+     * @param $tx
+     */
+    public function __construct($mgmtTx, $forward, $Rx, $mgmtRx, $tx)
+    {
+        $this->mgmtTx = $mgmtTx;
+        $this->forward = $forward;
+        $this->Rx = $Rx;
+        $this->mgmtRx = $mgmtRx;
+        $this->tx = $tx;
+    }
+
+
+    /**
      * @return mixed
      */
     public function getMgmtTx()

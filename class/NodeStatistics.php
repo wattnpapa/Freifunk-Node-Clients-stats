@@ -1,5 +1,6 @@
 <?php
 
+include("NodeTraffic.php");
 
 class NodeStatistics
 {
