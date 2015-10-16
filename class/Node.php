@@ -28,6 +28,18 @@ class Node
         $this->flag = $flag;
         $this->statistics = $statistics;
         $this->nodeinfo = $nodeinfo;
+
+        $this->fillRRDData();
+
+        $this->makeGraph();
+    }
+
+    private function fillRRDData(){
+
+    }
+
+    private function makeGraph(){
+
     }
 
     /**
