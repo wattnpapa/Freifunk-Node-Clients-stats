@@ -35,7 +35,43 @@ class Node
     }
 
     private function fillRRDData(){
+        if(!$this->checkRRDFileExists()){
+            $this->createRRDFile();
+        }
+        //TODO: Memory Usage
+        //TODO: clients
+        //TODO: rootfs_usage
+        //TODO: loadavg
+        //TODO: traffic
+    }
 
+    private function checkRRDFileExists(){
+        return file_exists($this->getRRDFileName());
+    }
+
+    private function createRRDFile(){
+        $options = array(
+            "--step", "60",            // Use a step-size of 5 minutes
+            "--start", "-6 months",     // this rrd started 6 months ago
+            "DS:memoryUsage:ABSOLUTE:600:0:U",
+            "DS:clients:ABSOLUTE:600:0:U",
+            "DS:rootfsUsage:ABSOLUTE:600:0:U",
+            "DS:loadavg:ABSOLUTE:600:0:U",
+            "DS:trafficRx:ABSOLUTE:600:0:U",
+            "DS:trafficMgmtRx:ABSOLUTE:600:0:U",
+            "DS:trafficTx:ABSOLUTE:600:0:U",
+            "DS:trafficMgmtTx:ABSOLUTE:600:0:U",
+            "DS:trafficForwarded:ABSOLUTE:600:0:U",
+            "RRA:AVERAGE:0.5:1:288",
+            "RRA:AVERAGE:0.5:12:168",
+            "RRA:AVERAGE:0.5:228:365",
+        );
+        $ret = rrd_create($this->getRRDFileName(), $options, count($options));
+
+    }
+
+    public function getRRDFileName(){
+        return "rrdData/nodes/"+$this->nodeinfo->getNodeId()+".rrd";
     }
 
     private function makeGraph(){
