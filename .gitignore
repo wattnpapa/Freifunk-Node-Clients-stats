@@ -1,2 +1,5 @@
 .idea/
 Freifunk-Node-Clients-stats.iml
+
+rrdData/*
+!.gitkeep
