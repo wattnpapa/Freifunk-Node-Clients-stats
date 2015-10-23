@@ -36,7 +36,10 @@ class Node
 
     private function fillRRDData(){
         if(!$this->checkRRDFileExists()){
+            echo "create";
+            echo "<br><br>";
             $this->createRRDFile();
+            echo "<br><br>";
         }
         //TODO: Memory Usage
         //TODO: clients
@@ -66,12 +69,17 @@ class Node
             "RRA:AVERAGE:0.5:12:168",
             "RRA:AVERAGE:0.5:228:365",
         );
-        $ret = rrd_create($this->getRRDFileName(), $options, count($options));
+        echo $this->getRRDFileName();
+        $ret = rrd_create($this->getRRDFileName(), $options);
+        if($ret){
+            echo "error: <br>";
+            print_r(rrd_error());
+        }
 
     }
 
     public function getRRDFileName(){
-        return "rrdData/nodes/"+$this->nodeinfo->getNodeId()+".rrd";
+        return "rrdData/nodes/".$this->nodeinfo->getNodeId().".rrd";
     }
 
     private function makeGraph(){
