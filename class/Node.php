@@ -36,16 +36,41 @@ class Node
 
     private function fillRRDData(){
         if(!$this->checkRRDFileExists()){
-            echo "create";
-            echo "<br><br>";
             $this->createRRDFile();
-            echo "<br><br>";
         }
+
         //TODO: Memory Usage
+        $memoryUsage = $this->getStatistics()->getMemoryUsage() * 100;
+        echo "Memory:";
+        echo $memoryUsage;
+        echo "<br>";
         //TODO: clients
+        $clients = $this->getStatistics()->getClients();
+        echo "Clients:";
+        echo $clients;
+        echo "<br>";
         //TODO: rootfs_usage
+        $rootfs = $this->getStatistics()->getRootfsUsage() * 100;
+        echo "rootfs:";
+        echo $rootfs;
+        echo "<br>";
         //TODO: loadavg
+        $loadavg = $this->getStatistics()->getLoadavg();
+        echo "loadavg:";
+        echo $loadavg;
+        echo "<br>";
         //TODO: traffic
+        $trafficrxbytes = $this->getStatistics()->getTraffic()->getMgmtTx()->getBytes();
+        echo "traffic rx bytes:";
+        echo $trafficrxbytes;
+        echo "<br>";
+        $trafficrxpackets = $this->getStatistics()->getTraffic()->getMgmtTx()->getPackets();
+        echo "traffic rx packets:";
+        echo $trafficrxpackets;
+        echo "<br>";
+        echo "<br>";
+        echo "<br>";
+        echo "##############################<br>";
     }
 
     private function checkRRDFileExists(){
@@ -69,12 +94,8 @@ class Node
             "RRA:AVERAGE:0.5:12:168",
             "RRA:AVERAGE:0.5:228:365",
         );
-        echo $this->getRRDFileName();
+
         $ret = rrd_create($this->getRRDFileName(), $options);
-        if($ret){
-            echo "error: <br>";
-            print_r(rrd_error());
-        }
 
     }
 
