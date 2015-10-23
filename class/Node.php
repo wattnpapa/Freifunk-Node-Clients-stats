@@ -130,8 +130,8 @@ class Node
             "--vertical-label=Clients",
             "--lower=0",
             "DEF:clients=".$this->getRRDFileName().":clients:AVERAGE",
-            "CDEF:tclients=clients,300,*",
-            "AREA:tclients#00FF00:Successful attempts",
+           
+            "AREA:clients#00FF00:Successful attempts",
             "COMMENT:\\n",
             "GPRINT:tclients:AVERAGE:successful attempts %6.2lf",
         );
