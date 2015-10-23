@@ -41,30 +41,23 @@ class Node
 
         //TODO: Memory Usage
         $memoryUsage = $this->getStatistics()->getMemoryUsage() * 100;
-        echo "Memory:";
-        echo $memoryUsage;
-        echo "<br>";
         //TODO: clients
         $clients = $this->getStatistics()->getClients();
-        echo "Clients:";
-        echo $clients;
-        echo "<br>";
         //TODO: rootfs_usage
         $rootfs = $this->getStatistics()->getRootfsUsage() * 100;
-        echo "rootfs:";
-        echo $rootfs;
-        echo "<br>";
         //TODO: loadavg
         $loadavg = $this->getStatistics()->getLoadavg();
-        echo "loadavg:";
-        echo $loadavg;
-        echo "<br>";
         //TODO: traffic
-        $trafficrxbytes = $this->getStatistics()->getTraffic()->getMgmtTx()->getBytes();
-        echo "traffic rx bytes:";
-        echo $trafficrxbytes;
-        echo "<br>";
-        $trafficrxpackets = $this->getStatistics()->getTraffic()->getMgmtTx()->getPackets();
+        $trafficMgmtRxbytes = $this->getStatistics()->getTraffic()->getMgmtRx()->getBytes();
+        $trafficMgmtRxpackets = $this->getStatistics()->getTraffic()->getMgmtRx()->getPackets();
+        $trafficMgmtTxbytes = $this->getStatistics()->getTraffic()->getMgmtTx()->getBytes();
+        $trafficMgmtTxpackets = $this->getStatistics()->getTraffic()->getMgmtTx()->getPackets();
+        $trafficRxbytes = $this->getStatistics()->getTraffic()->getRx()->getBytes();
+        $trafficRxpackets = $this->getStatistics()->getTraffic()->getRx()->getPackets();
+        $trafficTxbytes = $this->getStatistics()->getTraffic()->getTx()->getBytes();
+        $trafficTxpackets = $this->getStatistics()->getTraffic()->getTx()->getPackets();
+        $trafficForwardedBytes = $this->getStatistics()->getTraffic()->getForward()->getBytes();
+        $trafficForwardedPackets = $this->getStatistics()->getTraffic()->getForward()->getPackets();
         echo "traffic rx packets:";
         echo $trafficrxpackets;
         echo "<br>";
