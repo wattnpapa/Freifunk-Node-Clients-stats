@@ -44,6 +44,8 @@ class Node
         //TODO: Memory Usage
         $memoryUsage = $this->getStatistics()->getMemoryUsage() * 100;
         $data[] = $memoryUsage;
+        
+        //$data[] = time();
         //TODO: clients
         $clients = $this->getStatistics()->getClients();
         $data[] = $clients;
@@ -75,7 +77,21 @@ class Node
         $trafficForwardedPackets = $this->getStatistics()->getTraffic()->getForward()->getPackets();
         $data[] = $trafficForwardedPackets;
         
-        $ret = rrd_update($this->getRRDFileName(), $data);
+        echo "<br>";
+        print_r($data);
+        echo "<br>";
+        $string = implode(":",$data);
+        echo $string;
+        echo "<br>";
+        
+        //$ret = rrd_update($this->getRRDFileName(), array($data[0].":".$data[1].":".$data[2]));
+        //$ret = rrd_update($this->getRRDFileName(), array($data[0].":".$data[1].":".$data[2]));
+        
+        $ret = rrd_update($this->getRRDFileName(), array($string));
+        //$ret = rrd_update($this->getRRDFileName(), $data);
+        echo "<br>";
+        echo rrd_error();
+        echo "<br>";
     }
 
     private function checkRRDFileExists(){
@@ -84,27 +100,30 @@ class Node
 
     private function createRRDFile(){
         $options = array(
-            "--step", "60",            // Use a step-size of 5 minutes
+            "--step", "1",            // Use a step-size of 5 minutes
             "--start", "-6 months",     // this rrd started 6 months ago
-            "DS:memoryUsage:ABSOLUTE:600:0:100",
-            "DS:clients:ABSOLUTE:600:0:U",
-            "DS:rootfsUsage:ABSOLUTE:600:0:100",
-            "DS:loadavg:ABSOLUTE:600:0:U",
-            "DS:trafMgmtRxBy:ABSOLUTE:600:0:U",
-            "DS:trafMgmtRxPa:ABSOLUTE:600:0:U",
-            "DS:trafMgmtTxBy:ABSOLUTE:600:0:U",
-            "DS:trafMgmtTxPa:ABSOLUTE:600:0:U",            
-            "DS:trafRxBy:ABSOLUTE:600:0:U",
-            "DS:trafRxPa:ABSOLUTE:600:0:U",            
-            "DS:trafTxBy:ABSOLUTE:600:0:U",
-            "DS:trafTxPa:ABSOLUTE:600:0:U",            
-            "DS:trafForwardBy:ABSOLUTE:600:0:U",
-            "DS:trafForwardPa:ABSOLUTE:600:0:U",
+            "DS:memoryUsage:GAUGE:600:0:100",
+            "DS:clients:GAUGE:600:0:U",
+            "DS:rootfsUsage:GAUGE:600:0:100",
+            "DS:loadavg:GAUGE:600:0:U",
+            "DS:trafMgmtRxBy:GAUGE:600:0:U",
+            "DS:trafMgmtRxPa:GAUGE:600:0:U",
+            "DS:trafMgmtTxBy:GAUGE:600:0:U",
+            "DS:trafMgmtTxPa:GAUGE:600:0:U",            
+            "DS:trafRxBy:GAUGE:600:0:U",
+            "DS:trafRxPa:GAUGE:600:0:U",            
+            "DS:trafTxBy:GAUGE:600:0:U",
+            "DS:trafTxPa:GAUGE:600:0:U",            
+            "DS:trafForwardBy:GAUGE:600:0:U",
+            "DS:trafForwardPa:GAUGE:600:0:U",
             "RRA:AVERAGE:0.5:1:288",
-            "RRA:AVERAGE:0.5:12:168",
-            "RRA:AVERAGE:0.5:228:365",
+            "RRA:AVERAGE:0.5:1:168",
+            "RRA:AVERAGE:0.5:1:365",
         );
 
+        echo "<br>";
+        print_r($options);
+        echo "<br>";
         $ret = rrd_create($this->getRRDFileName(), $options);
         echo rrd_error();
     }
@@ -132,10 +151,11 @@ class Node
             "DEF:clients=".$this->getRRDFileName().":clients:AVERAGE",
            
             "AREA:clients#00FF00:Successful attempts",
-            "COMMENT:\\n",
-            "GPRINT:tclients:AVERAGE:successful attempts %6.2lf",
+            "COMMENT:FFNW\\n",
+            "GPRINT:clients:AVERAGE:successful attempts %6.2lf",
         );
         echo "ok";
+        echo "<br>";
         $ret = rrd_graph($this->getFileName(),$options);
         echo rrd_error();
         echo "<br>";
