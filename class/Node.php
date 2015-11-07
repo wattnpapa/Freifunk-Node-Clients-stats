@@ -31,7 +31,7 @@ class Node
 
         $this->fillRRDData();
 
-        $this->makeGraph();
+        //$this->makeGraph();
     }
 
     private function fillRRDData(){
@@ -100,8 +100,7 @@ class Node
 
     private function createRRDFile(){
         $options = array(
-            "--step", "1",            // Use a step-size of 5 minutes
-            "--start", "-6 months",     // this rrd started 6 months ago
+            "--step", "60",            // Use a step-size of 5 minutes
             "DS:memoryUsage:GAUGE:600:0:100",
             "DS:clients:GAUGE:600:0:U",
             "DS:rootfsUsage:GAUGE:600:0:100",
@@ -117,8 +116,8 @@ class Node
             "DS:trafForwardBy:GAUGE:600:0:U",
             "DS:trafForwardPa:GAUGE:600:0:U",
             "RRA:AVERAGE:0.5:1:288",
-            "RRA:AVERAGE:0.5:1:168",
-            "RRA:AVERAGE:0.5:1:365",
+            "RRA:AVERAGE:0.5:12:168",
+            "RRA:AVERAGE:0.5:228:365",
         );
 
         echo "<br>";
