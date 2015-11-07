@@ -19,29 +19,6 @@ class NodeInfo
     private $network;
 
     /**
-     * NodeInfo constructor.
-     * @param $hostname
-     * @param $hardware
-     * @param $location
-     * @param $system
-     * @param $software
-     * @param $node_id
-     * @param $owner
-     * @param $network
-     */
-    public function __construct($hostname, $hardware, $location, $system, $software, $node_id, $owner, $network)
-    {
-        $this->hostname = $hostname;
-        $this->hardware = $hardware;
-        $this->location = $location;
-        $this->system = $system;
-        $this->software = $software;
-        $this->node_id = $node_id;
-        $this->owner = $owner;
-        $this->network = $network;
-    }
-
-    /**
      * @return mixed
      */
     public function getHostname()

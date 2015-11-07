@@ -13,28 +13,9 @@ class Node
     private $statistics;
     private $nodeinfo;
 
-    /**
-     * Node constructor.
-     * @param $firstseen
-     * @param $lastseen
-     * @param $flag
-     * @param $statistics
-     * @param $nodeinfo
-     */
-    public function __construct($firstseen, $lastseen, $flag, $statistics, $nodeinfo)
-    {
-        $this->firstseen = $firstseen;
-        $this->lastseen = $lastseen;
-        $this->flag = $flag;
-        $this->statistics = $statistics;
-        $this->nodeinfo = $nodeinfo;
+   
 
-        $this->fillRRDData();
-
-        //$this->makeGraph();
-    }
-
-    private function fillRRDData(){
+    public function fillRRDData(){
         if(!$this->checkRRDFileExists()){
             $this->createRRDFile();
         }
@@ -77,21 +58,10 @@ class Node
         $trafficForwardedPackets = $this->getStatistics()->getTraffic()->getForward()->getPackets();
         $data[] = $trafficForwardedPackets;
         
-        echo "<br>";
-        print_r($data);
-        echo "<br>";
+       
         $string = implode(":",$data);
-        echo $string;
-        echo "<br>";
-        
-        //$ret = rrd_update($this->getRRDFileName(), array($data[0].":".$data[1].":".$data[2]));
-        //$ret = rrd_update($this->getRRDFileName(), array($data[0].":".$data[1].":".$data[2]));
         
         $ret = rrd_update($this->getRRDFileName(), array($string));
-        //$ret = rrd_update($this->getRRDFileName(), $data);
-        echo "<br>";
-        echo rrd_error();
-        echo "<br>";
     }
 
     private function checkRRDFileExists(){
@@ -120,24 +90,21 @@ class Node
             "RRA:AVERAGE:0.5:228:365",
         );
 
-        echo "<br>";
-        print_r($options);
-        echo "<br>";
         $ret = rrd_create($this->getRRDFileName(), $options);
         echo rrd_error();
     }
 
     public function getRRDFileName(){
-        return "rrdData/nodes/".$this->nodeinfo->getNodeId().".rrd";
+        return dirname(__FILE__)."/../rrdData/nodes/".$this->nodeinfo->getNodeId().".rrd";
     }
     
     public function getFileName(){
-        return "graphs/nodes/".$this->nodeinfo->getNodeId().".png";
+        return dirname(__FILE__)."/../graphs/nodes/".$this->nodeinfo->getNodeId().".png";
     }
 
-    private function makeGraph(){
+    public function makeGraph(){
         echo "make Graph <br>";
-        $this->createGraph("-1h","Clients");
+        $this->createGraph("-1h","Node: ".$this->nodeinfo->getNodeId());
     }
     
     private function createGraph($start, $title) {
@@ -147,11 +114,8 @@ class Node
             "--title=$title",
             "--vertical-label=Clients",
             "--lower=0",
-            "DEF:clients=".$this->getRRDFileName().":clients:AVERAGE",
-           
-            "AREA:clients#00FF00:Successful attempts",
-            "COMMENT:FFNW\\n",
-            "GPRINT:clients:AVERAGE:successful attempts %6.2lf",
+            "DEF:clients=".$this->getRRDFileName().":clients:AVERAGE",           
+            "AREA:clients#00FF00:Clients online",
         );
         echo "ok";
         echo "<br>";
