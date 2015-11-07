@@ -2,6 +2,11 @@
 
 This project creates Freifunk Node Statistics on demand.
 
+## Requierments
+
+php5-rrd
+php5-curl
+
 ## Installation
 
 ## Usage
