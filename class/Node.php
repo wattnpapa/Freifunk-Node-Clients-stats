@@ -98,16 +98,18 @@ class Node
         return dirname(__FILE__)."/../rrdData/nodes/".$this->nodeinfo->getNodeId().".rrd";
     }
     
-    public function getFileName($type){
-        return dirname(__FILE__)."/../graphs/nodes/".$this->nodeinfo->getNodeId()."_".$type.".png";
+    public function getFileName($type, $interval, $width, $height){
+        return dirname(__FILE__)."/../graphs/nodes/".$this->nodeinfo->getNodeId()."_".$type."_".$interval."_".$width."_".$height.".png";
     }
 
-    public function makeGraph($type, $width, $height){
+    public function makeGraph($type, $interval, $width, $height){
         switch($type){
-            case "clients": $this->createGraphClients("-2h","Clients Node: ".$this->nodeinfo->getNodeId(), $width, $height);
-                            break;
-            case "traffic": $this->createGraphTraffic("-2h","Traffic Node: ".$this->nodeinfo->getNodeId(), $width, $height);
-                            break;
+            case "clients":         $this->createGraphClients($interval,"Client Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+                                    break;
+            case "traffic":         $this->createGraphTraffic($interval,"Traffic Bytes Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+                                    break;
+            case "trafficPackages": $this->createGraphTrafficPackages($interval,"Traffic Packages Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+                                    break;
         }
         
     }
@@ -115,7 +117,7 @@ class Node
     private function createGraphClients($start, $title, $width, $height) {
         $options = array(
             "--slope-mode",
-            "--start", $start,
+            "--start", "-".$start,
             "--title=$title",
             "--vertical-label=Clients",
             "--width",$width,
@@ -124,31 +126,55 @@ class Node
             "DEF:clients=".$this->getRRDFileName().":clients:AVERAGE",
             "AREA:clients#00FF00:Clients online",
         );
-        $ret = rrd_graph($this->getFileName("clients"),$options);
+        $ret = rrd_graph($this->getFileName("clients",$start, $width, $height),$options);
         echo rrd_error();
     }
     
     private function createGraphTraffic($start, $title, $width, $height) {
         $options = array(
             "--slope-mode",
-            "--start", $start,
+            "--start", "-".$start,
             "--title=$title",
             "--vertical-label=Traffic Bytes",
             "--width",$width,
             "--height",$height,
             "--lower=0",
-            "DEF:trafRxBy=".$this->getRRDFileName().":trafRxBy:LAST",        
-            "DEF:trafTxBy=".$this->getRRDFileName().":trafTxBy:LAST",    
-            "DEF:trafMgmtTxBy=".$this->getRRDFileName().":trafMgmtTxBy:LAST",    
-            "DEF:trafMgmtRxBy=".$this->getRRDFileName().":trafMgmtRxBy:LAST",    
-            "DEF:trafForwardPa=".$this->getRRDFileName().":trafForwardPa:LAST",    
+            "DEF:trafRxBy=".$this->getRRDFileName().":trafRxBy:LAST",
+            "DEF:trafTxBy=".$this->getRRDFileName().":trafTxBy:LAST",
+            "DEF:trafMgmtTxBy=".$this->getRRDFileName().":trafMgmtTxBy:LAST",
+            "DEF:trafMgmtRxBy=".$this->getRRDFileName().":trafMgmtRxBy:LAST",
+            "DEF:trafForwardBy=".$this->getRRDFileName().":trafForwardBy:LAST",
             "LINE2:trafRxBy#00FF00:trafRxBy",
             "LINE2:trafTxBy#F06FF0:trafTxBy",
             "LINE2:trafMgmtTxBy#0F0FF0:trafMgmtTxBy",
             "LINE2:trafMgmtRxBy#FFFF0F:trafMgmtRxBy",
+            "LINE2:trafForwardBy#124f77:trafForwardBy",
+        );
+        $ret = rrd_graph($this->getFileName("traffic",$start, $width, $height),$options);
+        echo rrd_error();
+    }
+
+    private function createGraphTrafficPackages($start, $title, $width, $height) {
+        $options = array(
+            "--slope-mode",
+            "--start", "-".$start,
+            "--title=$title",
+            "--vertical-label=Traffic Packages",
+            "--width",$width,
+            "--height",$height,
+            "--lower=0",
+            "DEF:trafRxPa=".$this->getRRDFileName().":trafRxPa:LAST",
+            "DEF:trafTxPa=".$this->getRRDFileName().":trafTxPa:LAST",
+            "DEF:trafMgmtTxPa=".$this->getRRDFileName().":trafMgmtTxPa:LAST",
+            "DEF:trafMgmtRxPa=".$this->getRRDFileName().":trafMgmtRxPa:LAST",
+            "DEF:trafForwardPa=".$this->getRRDFileName().":trafForwardPa:LAST",
+            "LINE2:trafRxPa#00FF00:trafRxPa",
+            "LINE2:trafTxPa#F06FF0:trafTxPa",
+            "LINE2:trafMgmtTxPa#0F0FF0:trafMgmtTxPa",
+            "LINE2:trafMgmtRxPa#FFFF0F:trafMgmtRxPa",
             "LINE2:trafForwardPa#124f77:trafForwardPa",
         );
-        $ret = rrd_graph($this->getFileName("traffic"),$options);
+        $ret = rrd_graph($this->getFileName("trafficPackages",$start, $width, $height),$options);
         echo rrd_error();
     }
 
