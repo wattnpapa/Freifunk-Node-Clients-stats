@@ -39,9 +39,9 @@ class System
             "--step", "60",            // Use a step-size of 5 minutes
             "DS:clients:GAUGE:600:0:U",
             "DS:nodes:GAUGE:600:0:U",
-            "RRA:AVERAGE:0.5:1:288",
-            "RRA:AVERAGE:0.5:12:168",
-            "RRA:AVERAGE:0.5:228:365",
+            "RRA:AVERAGE:0.5:1m:30d",
+            "RRA:AVERAGE:0.5:1h:1y",
+            "RRA:AVERAGE:0.5:1d:10y",
         );
 
         $ret = rrd_create($this->rrdFile, $options);
@@ -75,6 +75,10 @@ class System
 
     private function makeGraphs(){
         $this->createGraphClients("-1h", "Online", 800, 200);
+        $this->createGraphClients("-6h", "Online", 800, 200);
+        $this->createGraphClients("-24h", "Online", 800, 200);
+        $this->createGraphClients("-30d", "Online", 800, 200);
+        $this->createGraphClients("-1y", "Online", 800, 200);
 
     }
 
