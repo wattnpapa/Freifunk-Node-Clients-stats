@@ -7,5 +7,5 @@ $node = new Node();
 $nodeinfo = new NodeInfo();
 $nodeinfo->setNodeId($mac);
 $node->setNodeinfo($nodeinfo);
-$node->makeGraph();
+$node->makeGraph(800,200);
 ?>

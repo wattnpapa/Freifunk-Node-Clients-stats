@@ -102,17 +102,19 @@ class Node
         return dirname(__FILE__)."/../graphs/nodes/".$this->nodeinfo->getNodeId().".png";
     }
 
-    public function makeGraph(){
+    public function makeGraph($width, $height){
         echo "make Graph <br>";
-        $this->createGraph("-1h","Node: ".$this->nodeinfo->getNodeId());
+        $this->createGraph("-1h","Node: ".$this->nodeinfo->getNodeId(), $width, $height);
     }
     
-    private function createGraph($start, $title) {
+    private function createGraph($start, $title, $width, $height) {
         $options = array(
             "--slope-mode",
             "--start", $start,
             "--title=$title",
             "--vertical-label=Clients",
+            "--width",$width,
+            "--height",$height,
             "--lower=0",
             "DEF:clients=".$this->getRRDFileName().":clients:AVERAGE",           
             "AREA:clients#00FF00:Clients online",
