@@ -104,9 +104,9 @@ class Node
 
     public function makeGraph($type, $width, $height){
         switch($type){
-            case "clients": $this->createGraphClients("-24h","Clients Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+            case "clients": $this->createGraphClients("-2h","Clients Node: ".$this->nodeinfo->getNodeId(), $width, $height);
                             break;
-            case "traffic": $this->createGraphTraffic("-24h","Traffic Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+            case "traffic": $this->createGraphTraffic("-2h","Traffic Node: ".$this->nodeinfo->getNodeId(), $width, $height);
                             break;
         }
         

@@ -1,6 +1,7 @@
 <?php
 
 include("Node.php");
+include("System.php");
 
 class Data
 {
@@ -9,9 +10,8 @@ class Data
     private $dataRaw;
     private $url;
     private $nodes;
-    
-    private $counterClients;
-    private $counterOnlineNodes;
+    private $system;
+
 
     /**
      * Data constructor.
@@ -20,9 +20,10 @@ class Data
     public function __construct($url)
     {
         $this->url = $url;
+        $this->system = new System();
         $this->catchData();
-        $this->counterClients = 0;
-        $this->counterOnlineNodes = 0;
+
+
     }
 
 
@@ -30,7 +31,7 @@ class Data
         //$this->dataRaw = file_get_contents($this->url);
         
         $this->dataRaw = $this->get_remote_data($this->url);
-        $this->data = json_decode($this->dataRaw,true);
+        $this->dataClients = json_decode($this->dataRaw,true);
         $this->parseData();
     }
     
@@ -94,12 +95,12 @@ class Data
 
     private function parseData(){
         $this->nodes = Array();
-        foreach($this->data['nodes'] as $nodeData){
+        foreach($this->dataClients['nodes'] as $nodeData){
 
             ////////
             $flags = new NodeFlags($nodeData['flags']['gateway'],$nodeData['flags']['online']);
             if($nodeData['flags']['online']){
-                $this->counterOnlineNodes++;
+                $this->system->addOnlineNode();
             }
             ////////
 
@@ -150,8 +151,7 @@ class Data
                                             ,$gateway
                                             ,$loadavg
                                             ,$nodeTraffic);
-            
-            $this->counterClients += $clients;
+            $this->system->addClients($clients);
             ////////
 
 
@@ -229,6 +229,12 @@ class Data
             //echo $node->getNodeinfo()->getNetwork()->getMac();
             //echo "<br>####################################<br>";
         }
+
+        echo $this->system->getCounterClients();
+        echo "--";
+        echo $this->system->getCounterOnlineNodes();
+
+        $this->system->fillRRDData();
     }
 
     /**

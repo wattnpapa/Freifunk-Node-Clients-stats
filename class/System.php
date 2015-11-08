@@ -34,6 +34,68 @@ class System
         $this->counterOnlineNodes++;
     }
 
+    private function createRRDFile(){
+        $options = array(
+            "--step", "60",            // Use a step-size of 5 minutes
+            "DS:clients:GAUGE:600:0:U",
+            "DS:nodes:GAUGE:600:0:U",
+            "RRA:AVERAGE:0.5:1:288",
+            "RRA:AVERAGE:0.5:12:168",
+            "RRA:AVERAGE:0.5:228:365",
+        );
+
+        $ret = rrd_create($this->rrdFile, $options);
+        echo rrd_error();
+    }
+
+    private function checkRRDFile(){
+        return file_exists($this->rrdFile);
+    }
+
+    public function fillRRDData(){
+        if(!$this->checkRRDFile()){
+            $this->createRRDFile();
+        }
+
+        $data = Array();
+        $data[] = time();
+
+        $data[] = $this->counterClients;
+        $data[] = $this->counterOnlineNodes;
+
+        $string = implode(":",$data);
+
+        echo $string;
+
+        $ret = rrd_update($this->rrdFile, array($string));
+        echo rrd_error();
+
+        $this->makeGraphs();
+    }
+
+    private function makeGraphs(){
+        $this->createGraphClients("-1h", "Online", 800, 200);
+
+    }
+
+    private function createGraphClients($start, $title, $width, $height) {
+        $options = array(
+            "--slope-mode",
+            "--start", $start,
+            "--title=$title",
+            "--vertical-label=Clients",
+            "--width",$width,
+            "--height",$height,
+            "--lower=0",
+            "DEF:clients=".$this->rrdFile.":clients:AVERAGE",
+            "DEF:nodes=".$this->rrdFile.":nodes:AVERAGE",
+            "AREA:clients#00FF00:Clients online",
+            "LINE2:nodes#FFFF00:nodes",
+        );
+        $ret = rrd_graph($this->graphFolder."graph".$start.".png",$options);
+        echo rrd_error();
+    }
+
 
 
     /**
