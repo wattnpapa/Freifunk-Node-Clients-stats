@@ -104,9 +104,9 @@ class Node
 
     public function makeGraph($type, $width, $height){
         switch($type){
-            case "clients": $this->createGraphClients("-1h","Clients Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+            case "clients": $this->createGraphClients("-24h","Clients Node: ".$this->nodeinfo->getNodeId(), $width, $height);
                             break;
-            case "traffic": $this->createGraphTraffic("-1h","Traffic Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+            case "traffic": $this->createGraphTraffic("-24h","Traffic Node: ".$this->nodeinfo->getNodeId(), $width, $height);
                             break;
         }
         
@@ -121,7 +121,7 @@ class Node
             "--width",$width,
             "--height",$height,
             "--lower=0",
-            "DEF:clients=".$this->getRRDFileName().":clients:AVERAGE",           
+            "DEF:clients=".$this->getRRDFileName().":clients:MAX",           
             "AREA:clients#00FF00:Clients online",
         );
         $ret = rrd_graph($this->getFileName("clients"),$options);
@@ -137,8 +137,16 @@ class Node
             "--width",$width,
             "--height",$height,
             "--lower=0",
-            "DEF:trafRxBy=".$this->getRRDFileName().":trafRxBy:AVERAGE",           
-            "AREA:trafRxBy#00FF00:trafRxBy",
+            "DEF:trafRxBy=".$this->getRRDFileName().":trafRxBy:LAST",        
+            "DEF:trafTxBy=".$this->getRRDFileName().":trafTxBy:LAST",    
+            "DEF:trafMgmtTxBy=".$this->getRRDFileName().":trafMgmtTxBy:LAST",    
+            "DEF:trafMgmtRxBy=".$this->getRRDFileName().":trafMgmtRxBy:LAST",    
+            "DEF:trafForwardPa=".$this->getRRDFileName().":trafForwardPa:LAST",    
+            "LINE2:trafRxBy#00FF00:trafRxBy",
+            "LINE2:trafTxBy#F06FF0:trafTxBy",
+            "LINE2:trafMgmtTxBy#0F0FF0:trafMgmtTxBy",
+            "LINE2:trafMgmtRxBy#FFFF0F:trafMgmtRxBy",
+            "LINE2:trafForwardPa#124f77:trafForwardPa",
         );
         $ret = rrd_graph($this->getFileName("traffic"),$options);
         echo rrd_error();

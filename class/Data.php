@@ -9,6 +9,9 @@ class Data
     private $dataRaw;
     private $url;
     private $nodes;
+    
+    private $counterClients;
+    private $counterOnlineNodes;
 
     /**
      * Data constructor.
@@ -18,6 +21,8 @@ class Data
     {
         $this->url = $url;
         $this->catchData();
+        $this->counterClients = 0;
+        $this->counterOnlineNodes = 0;
     }
 
 
@@ -25,7 +30,6 @@ class Data
         //$this->dataRaw = file_get_contents($this->url);
         
         $this->dataRaw = $this->get_remote_data($this->url);
-        //echo $this->dataRaw;
         $this->data = json_decode($this->dataRaw,true);
         $this->parseData();
     }
@@ -94,6 +98,9 @@ class Data
 
             ////////
             $flags = new NodeFlags($nodeData['flags']['gateway'],$nodeData['flags']['online']);
+            if($nodeData['flags']['online']){
+                $this->counterOnlineNodes++;
+            }
             ////////
 
             ////////
@@ -143,6 +150,8 @@ class Data
                                             ,$gateway
                                             ,$loadavg
                                             ,$nodeTraffic);
+            
+            $this->counterClients += $clients;
             ////////
 
 
