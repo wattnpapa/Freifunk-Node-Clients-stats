@@ -36,18 +36,22 @@ if($type == "Node"){
             <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=clients" />
             <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=traffic" />
             <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=trafficPackages" />
+            <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=memoryUsage" />
             <h1>Last Day</h1>
             <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=clients" />
             <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=traffic" />
             <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=trafficPackages" />
+            <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=memoryUsage" />
             <h1>Last Month</h1>
             <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=clients" />
             <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=traffic" />
             <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=trafficPackages" />
+            <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=memoryUsage" />
             <h1>Last Year</h1>
             <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=clients" />
             <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=traffic" />
             <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=trafficPackages" />
+            <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=memoryUsage" />
             <?php
         }
     ?>

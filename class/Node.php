@@ -110,6 +110,8 @@ class Node
                                     break;
             case "trafficPackages": $this->createGraphTrafficPackages($interval,"Traffic Packages Node: ".$this->nodeinfo->getNodeId(), $width, $height);
                                     break;
+            case "memoryUsage":     $this->createGraphMemory($interval,"Memory Usage Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+                                    break;
         }
         
     }
@@ -127,6 +129,22 @@ class Node
             "AREA:clients#00FF00:Clients online",
         );
         $ret = rrd_graph($this->getFileName("clients",$start, $width, $height),$options);
+        echo rrd_error();
+    }
+
+    private function createGraphMemory($start, $title, $width, $height) {
+        $options = array(
+            "--slope-mode",
+            "--start", "-".$start,
+            "--title=$title",
+            "--vertical-label=Memory Usage in %",
+            "--width",$width,
+            "--height",$height,
+            "--lower=0",
+            "DEF:memoryUsage=".$this->getRRDFileName().":memoryUsage:AVERAGE",
+            "AREA:memoryUsage#00FF00:memoryUsage",
+        );
+        $ret = rrd_graph($this->getFileName("memoryUsage",$start, $width, $height),$options);
         echo rrd_error();
     }
     
