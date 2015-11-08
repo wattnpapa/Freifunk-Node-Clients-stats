@@ -112,6 +112,10 @@ class Node
                                     break;
             case "memoryUsage":     $this->createGraphMemory($interval,"Memory Usage Node: ".$this->nodeinfo->getNodeId(), $width, $height);
                                     break;
+            case "rootfsUsage":     $this->createGraphRootFs($interval,"RootFS Usage Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+                                    break;
+            case "loadavg":         $this->createGraphLoadAvg($interval,"Load Average Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+                                    break;
         }
         
     }
@@ -145,6 +149,38 @@ class Node
             "AREA:memoryUsage#00FF00:memoryUsage",
         );
         $ret = rrd_graph($this->getFileName("memoryUsage",$start, $width, $height),$options);
+        echo rrd_error();
+    }
+
+    private function createGraphRootFs($start, $title, $width, $height) {
+        $options = array(
+            "--slope-mode",
+            "--start", "-".$start,
+            "--title=$title",
+            "--vertical-label=RootFS Usage in %",
+            "--width",$width,
+            "--height",$height,
+            "--lower=0",
+            "DEF:rootfsUsage=".$this->getRRDFileName().":rootfsUsage:AVERAGE",
+            "AREA:rootfsUsage#00FF00:rootfsUsage",
+        );
+        $ret = rrd_graph($this->getFileName("rootfsUsage",$start, $width, $height),$options);
+        echo rrd_error();
+    }
+
+    private function createGraphLoadAvg($start, $title, $width, $height) {
+        $options = array(
+            "--slope-mode",
+            "--start", "-".$start,
+            "--title=$title",
+            "--vertical-label=Load Average",
+            "--width",$width,
+            "--height",$height,
+            "--lower=0",
+            "DEF:loadavg=".$this->getRRDFileName().":loadavg:AVERAGE",
+            "AREA:loadavg#00FF00:loadavg",
+        );
+        $ret = rrd_graph($this->getFileName("loadavg",$start, $width, $height),$options);
         echo rrd_error();
     }
     
