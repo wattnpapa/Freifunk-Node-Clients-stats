@@ -5,7 +5,7 @@ $mac = "14cc2091ecd0";
 if(isset($_GET['type']))
     $type = $_GET['type'];
 
-if($type == "node"){
+if($type == "Node"){
     if(isset($_GET['mac']))
         $mac = $_GET['mac'];
 }
@@ -33,21 +33,21 @@ if($type == "node"){
         if($type == "Node"){
             ?>
             <h1>Last Hour</h1>
-            <img src="getNodeGraph.php?interval=1H&type=clients" />
-            <img src="getNodeGraph.php?interval=1H&type=traffic" />
-            <img src="getNodeGraph.php?interval=1H&type=trafficPackages" />
+            <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=clients" />
+            <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=traffic" />
+            <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=trafficPackages" />
             <h1>Last Day</h1>
-            <img src="getNodeGraph.php?interval=1D&type=clients" />
-            <img src="getNodeGraph.php?interval=1D&type=traffic" />
-            <img src="getNodeGraph.php?interval=1D&type=trafficPackages" />
+            <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=clients" />
+            <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=traffic" />
+            <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=trafficPackages" />
             <h1>Last Month</h1>
-            <img src="getNodeGraph.php?interval=1m&type=clients" />
-            <img src="getNodeGraph.php?interval=1m&type=traffic" />
-            <img src="getNodeGraph.php?interval=1m&type=trafficPackages" />
+            <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=clients" />
+            <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=traffic" />
+            <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=trafficPackages" />
             <h1>Last Year</h1>
-            <img src="getNodeGraph.php?interval=1Y&type=clients" />
-            <img src="getNodeGraph.php?interval=1Y&type=traffic" />
-            <img src="getNodeGraph.php?interval=1Y&type=trafficPackages" />
+            <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=clients" />
+            <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=traffic" />
+            <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=trafficPackages" />
             <?php
         }
     ?>
