@@ -75,16 +75,16 @@ class Node
             "DS:clients:GAUGE:600:0:U",
             "DS:rootfsUsage:GAUGE:600:0:100",
             "DS:loadavg:GAUGE:600:0:U",
-            "DS:trafMgmtRxBy:GAUGE:600:0:U",
-            "DS:trafMgmtRxPa:GAUGE:600:0:U",
-            "DS:trafMgmtTxBy:GAUGE:600:0:U",
-            "DS:trafMgmtTxPa:GAUGE:600:0:U",            
-            "DS:trafRxBy:GAUGE:600:0:U",
-            "DS:trafRxPa:GAUGE:600:0:U",            
-            "DS:trafTxBy:GAUGE:600:0:U",
-            "DS:trafTxPa:GAUGE:600:0:U",            
-            "DS:trafForwardBy:GAUGE:600:0:U",
-            "DS:trafForwardPa:GAUGE:600:0:U",
+            "DS:trafMgmtRxBy:COUNTER:600:0:U",
+            "DS:trafMgmtRxPa:COUNTER:600:0:U",
+            "DS:trafMgmtTxBy:COUNTER:600:0:U",
+            "DS:trafMgmtTxPa:COUNTER:600:0:U",            
+            "DS:trafRxBy:COUNTER:600:0:U",
+            "DS:trafRxPa:COUNTER:600:0:U",            
+            "DS:trafTxBy:COUNTER:600:0:U",
+            "DS:trafTxPa:COUNTER:600:0:U",            
+            "DS:trafForwardBy:COUNTER:600:0:U",
+            "DS:trafForwardPa:COUNTER:600:0:U",
             "RRA:AVERAGE:0.5:1:288",
             "RRA:AVERAGE:0.5:12:168",
             "RRA:AVERAGE:0.5:228:365",
@@ -98,16 +98,21 @@ class Node
         return dirname(__FILE__)."/../rrdData/nodes/".$this->nodeinfo->getNodeId().".rrd";
     }
     
-    public function getFileName(){
-        return dirname(__FILE__)."/../graphs/nodes/".$this->nodeinfo->getNodeId().".png";
+    public function getFileName($type){
+        return dirname(__FILE__)."/../graphs/nodes/".$this->nodeinfo->getNodeId()."_".$type.".png";
     }
 
-    public function makeGraph($width, $height){
-        echo "make Graph <br>";
-        $this->createGraph("-1h","Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+    public function makeGraph($type, $width, $height){
+        switch($type){
+            case "clients": $this->createGraphClients("-1h","Clients Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+                            break;
+            case "traffic": $this->createGraphTraffic("-1h","Traffic Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+                            break;
+        }
+        
     }
     
-    private function createGraph($start, $title, $width, $height) {
+    private function createGraphClients($start, $title, $width, $height) {
         $options = array(
             "--slope-mode",
             "--start", $start,
@@ -119,11 +124,24 @@ class Node
             "DEF:clients=".$this->getRRDFileName().":clients:AVERAGE",           
             "AREA:clients#00FF00:Clients online",
         );
-        echo "ok";
-        echo "<br>";
-        $ret = rrd_graph($this->getFileName(),$options);
+        $ret = rrd_graph($this->getFileName("clients"),$options);
         echo rrd_error();
-        echo "<br>";
+    }
+    
+    private function createGraphTraffic($start, $title, $width, $height) {
+        $options = array(
+            "--slope-mode",
+            "--start", $start,
+            "--title=$title",
+            "--vertical-label=Traffic Bytes",
+            "--width",$width,
+            "--height",$height,
+            "--lower=0",
+            "DEF:trafRxBy=".$this->getRRDFileName().":trafRxBy:AVERAGE",           
+            "AREA:trafRxBy#00FF00:trafRxBy",
+        );
+        $ret = rrd_graph($this->getFileName("traffic"),$options);
+        echo rrd_error();
     }
 
      
