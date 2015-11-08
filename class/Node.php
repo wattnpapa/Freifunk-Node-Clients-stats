@@ -121,7 +121,7 @@ class Node
             "--width",$width,
             "--height",$height,
             "--lower=0",
-            "DEF:clients=".$this->getRRDFileName().":clients:MAX",           
+            "DEF:clients=".$this->getRRDFileName().":clients:AVERAGE",
             "AREA:clients#00FF00:Clients online",
         );
         $ret = rrd_graph($this->getFileName("clients"),$options);

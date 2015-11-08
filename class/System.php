@@ -94,7 +94,7 @@ class System
             "DEF:clients=".$this->rrdFile.":clients:AVERAGE",
             "DEF:nodes=".$this->rrdFile.":nodes:AVERAGE",
             "AREA:clients#00FF00:Clients online",
-            "LINE2:nodes#FFFF00:nodes",
+            "LINE2:nodes#0066cc:nodes",
         );
         $ret = rrd_graph($this->graphFolder."graph".$start.".png",$options);
         echo rrd_error();
