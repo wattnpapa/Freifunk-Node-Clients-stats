@@ -3,6 +3,6 @@
 include("class/Data.php");
 
 
-$data = new Data("http://mesh.sjr-ol.de/data/nodes.json");
+$data = new Data("https://srv09.ffnw.de/public/data/batman-v15/nodes.json");
 
 ?>
