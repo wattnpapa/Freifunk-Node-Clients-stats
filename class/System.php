@@ -52,6 +52,15 @@ class System
         return file_exists($this->rrdFile);
     }
 
+    public function getFileName($interval, $width, $height){
+        return "system_".$interval."_".$width."_".$height.".png";
+    }
+
+    public function getFileURL($interval, $width, $height){
+        return $this->graphFolder.$this->getFileName($interval, $width, $height);
+    }
+
+
     public function fillRRDData(){
         if(!$this->checkRRDFile()){
             $this->createRRDFile();
@@ -69,23 +78,16 @@ class System
 
         $ret = rrd_update($this->rrdFile, array($string));
         echo rrd_error();
-
-        $this->makeGraphs();
     }
 
-    private function makeGraphs(){
-        $this->createGraphClients("-1h", "Online", 800, 200);
-        $this->createGraphClients("-6h", "Online", 800, 200);
-        $this->createGraphClients("-24h", "Online", 800, 200);
-        $this->createGraphClients("-30d", "Online", 800, 200);
-        $this->createGraphClients("-1y", "Online", 800, 200);
-
+    public function makeGraph($interval, $width, $height){
+        $this->createGraphClients($interval, "Online", $width, $height);
     }
 
     private function createGraphClients($start, $title, $width, $height) {
         $options = array(
             "--slope-mode",
-            "--start", $start,
+            "--start", "-".$start,
             "--title=$title",
             "--vertical-label=Clients",
             "--width",$width,
@@ -96,7 +98,7 @@ class System
             "AREA:clients#00FF00:Clients online",
             "LINE2:nodes#0066cc:nodes",
         );
-        $ret = rrd_graph($this->graphFolder."graph".$start.".png",$options);
+        $ret = rrd_graph($this->getFileURL($start, $width, $height),$options);
         echo rrd_error();
     }
 
