@@ -85,9 +85,9 @@ class Node
             "DS:trafTxPa:COUNTER:600:0:U",            
             "DS:trafForwardBy:COUNTER:600:0:U",
             "DS:trafForwardPa:COUNTER:600:0:U",
-            "RRA:AVERAGE:0.5:1m:30d",
-            "RRA:AVERAGE:0.5:1h:1y",
-            "RRA:AVERAGE:0.5:1d:10y",
+            "RRA:AVERAGE:0.5:1:10080", //every minute one week
+            "RRA:AVERAGE:0.5:60:8760", //
+            "RRA:AVERAGE:0.5:1440:525600",
         );
 
         $ret = rrd_create($this->getRRDFileName(), $options);
