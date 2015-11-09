@@ -255,18 +255,21 @@ class Node
     }
 
     public function makeGraph($type, $interval, $width, $height){
+        $nodeid = $this->nodeinfo->getNodeId();
+        $hostname = $this->nodeinfo->getHostname();
+        $nodeHeaderText = $hostname." - ".$nodeid;
         switch($type){
-            case "clients":         $this->createGraphClients($interval,"Client Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+            case "clients":         $this->createGraphClients($interval,"Clients Online - ".$nodeHeaderText, $width, $height);
                                     break;
-            case "traffic":         $this->createGraphTraffic($interval,"Traffic Bytes Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+            case "traffic":         $this->createGraphTraffic($interval,"Traffic Bytes - ".$nodeHeaderText, $width, $height);
                                     break;
-            case "trafficPackages": $this->createGraphTrafficPackages($interval,"Traffic Packages Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+            case "trafficPackages": $this->createGraphTrafficPackages($interval,"Traffic Packages - ".$nodeHeaderText, $width, $height);
                                     break;
-            case "memoryUsage":     $this->createGraphMemory($interval,"Memory Usage Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+            case "memoryUsage":     $this->createGraphMemory($interval,"Memory Usage - ".$nodeHeaderText, $width, $height);
                                     break;
-            case "rootfsUsage":     $this->createGraphRootFs($interval,"RootFS Usage Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+            case "rootfsUsage":     $this->createGraphRootFs($interval,"RootFS Usage - ".$nodeHeaderText, $width, $height);
                                     break;
-            case "loadavg":         $this->createGraphLoadAvg($interval,"Load Average Node: ".$this->nodeinfo->getNodeId(), $width, $height);
+            case "loadavg":         $this->createGraphLoadAvg($interval,"Load Average - ".$nodeHeaderText, $width, $height);
                                     break;
         }
         
