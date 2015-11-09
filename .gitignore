@@ -3,5 +3,6 @@ Freifunk-Node-Clients-stats.iml
 !.gitkeep
 rrdData/*
 graphs/*
+nodedata/*
 
 
