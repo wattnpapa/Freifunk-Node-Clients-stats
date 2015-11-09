@@ -258,21 +258,38 @@ class Node
         $nodeid = $this->nodeinfo->getNodeId();
         $hostname = $this->nodeinfo->getHostname();
         $nodeHeaderText = $hostname." - ".$nodeid;
-        switch($type){
-            case "clients":         $this->createGraphClients($interval,"Clients Online - ".$nodeHeaderText, $width, $height);
-                                    break;
-            case "traffic":         $this->createGraphTraffic($interval,"Traffic Bytes - ".$nodeHeaderText, $width, $height);
-                                    break;
-            case "trafficPackages": $this->createGraphTrafficPackages($interval,"Traffic Packages - ".$nodeHeaderText, $width, $height);
-                                    break;
-            case "memoryUsage":     $this->createGraphMemory($interval,"Memory Usage - ".$nodeHeaderText, $width, $height);
-                                    break;
-            case "rootfsUsage":     $this->createGraphRootFs($interval,"RootFS Usage - ".$nodeHeaderText, $width, $height);
-                                    break;
-            case "loadavg":         $this->createGraphLoadAvg($interval,"Load Average - ".$nodeHeaderText, $width, $height);
-                                    break;
+        if($this->checkReDrawGraph($this->getFileName($type,$interval, $width, $height))){
+            switch ($type) {
+                case "clients":
+                    $this->createGraphClients($interval, "Clients Online - " . $nodeHeaderText, $width, $height);
+                    break;
+                case "traffic":
+                    $this->createGraphTraffic($interval, "Traffic Bytes - " . $nodeHeaderText, $width, $height);
+                    break;
+                case "trafficPackages":
+                    $this->createGraphTrafficPackages($interval, "Traffic Packages - " . $nodeHeaderText, $width, $height);
+                    break;
+                case "memoryUsage":
+                    $this->createGraphMemory($interval, "Memory Usage - " . $nodeHeaderText, $width, $height);
+                    break;
+                case "rootfsUsage":
+                    $this->createGraphRootFs($interval, "RootFS Usage - " . $nodeHeaderText, $width, $height);
+                    break;
+                case "loadavg":
+                    $this->createGraphLoadAvg($interval, "Load Average - " . $nodeHeaderText, $width, $height);
+                    break;
+            }
         }
-        
+    }
+
+    private function checkReDrawGraph($filename){
+        $filetime = filemtime($filename);
+        if(!$filetime)
+            return true;
+        if( ($filetime+60) > time() ){
+            return false;
+        }
+        return true;
     }
     
     private function createGraphClients($start, $title, $width, $height) {
