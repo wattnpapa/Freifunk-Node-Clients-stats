@@ -13,7 +13,159 @@ class Node
     private $statistics;
     private $nodeinfo;
 
-   
+    private $rawDataJson;
+    private $rawData;
+
+
+    private function getRawFilePath($mac){
+        return dirname(__FILE__)."/../nodedata/".$mac.".json";
+    }
+
+    public function initFromFile($mac){
+        $this->readRawData($mac);
+    }
+
+    private function writeRawData($mac){
+        $fd = fopen($this->getRawFilePath($mac), 'w');
+        fwrite($fd,$this->rawDataJson);
+        fclose($fd);
+    }
+
+    private function readRawData($mac){
+        $fd = fopen($this->getRawFilePath($mac), 'r');
+        $this->rawDataJson = fread($fd,filesize($this->getRawFilePath($mac)));
+        $this->rawData = json_decode($this->rawDataJson,true);
+        $this->parseRawData();
+    }
+
+    public function setRawData($json){
+        $this->rawDataJson = $json;
+        $this->rawData = json_decode($this->rawDataJson,true);
+        $this->writeRawData($this->rawData['nodeinfo']['node_id']);
+    }
+
+    public function parseRawData(){
+
+        ////////
+        $flags = new NodeFlags($this->rawData['flags']['gateway'],$this->rawData['flags']['online']);
+        ////////
+
+        ////////
+        if(isset($this->rawData['statistics']['traffic'])){
+            $mgmtTx = new Traffic($this->rawData['statistics']['traffic']['mgmt_tx']['packets'],$this->rawData['statistics']['traffic']['mgmt_tx']['bytes']);
+            $forward = new Traffic($this->rawData['statistics']['traffic']['forward']['packets'],$this->rawData['statistics']['traffic']['forward']['bytes']);
+            $rx = new Traffic($this->rawData['statistics']['traffic']['rx']['packets'],$this->rawData['statistics']['traffic']['rx']['bytes']);
+            $mgmtRx = new Traffic($this->rawData['statistics']['traffic']['mgmt_rx']['packets'],$this->rawData['statistics']['traffic']['mgmt_rx']['bytes']);
+            $tx = new Traffic($this->rawData['statistics']['traffic']['tx']['packets'],$this->rawData['statistics']['traffic']['tx']['bytes']);
+            $nodeTraffic = new NodeTraffic($mgmtTx,$forward,$rx,$mgmtRx,$tx);
+        }
+        else{
+            $nodeTraffic = new NodeTraffic(new Traffic(0,0),new Traffic(0,0),new Traffic(0,0),new Traffic(0,0),new Traffic(0,0));
+        }
+        ////////
+
+        ////////
+        if(isset($this->rawData['statistics']['memory_usage']))
+            $memoryUsage = $this->rawData['statistics']['memory_usage'];
+        else
+            $memoryUsage = 0;
+        if(isset($this->rawData['statistics']['clients']))
+            $clients = $this->rawData['statistics']['clients'];
+        else
+            $clients = 0;
+        if(isset($this->rawData['statistics']['rootfs_usage']))
+            $rootfsUsage = $this->rawData['statistics']['rootfs_usage'];
+        else
+            $rootfsUsage = 0;
+        if(isset($this->rawData['statistics']['uptime']))
+            $uptime = $this->rawData['statistics']['uptime'];
+        else
+            $uptime = 0;
+        if(isset($this->rawData['statistics']['gateway']))
+            $gateway = $this->rawData['statistics']['gateway'];
+        else
+            $gateway = 0;
+        if(isset($this->rawData['statistics']['loadavg']))
+            $loadavg = $this->rawData['statistics']['loadavg'];
+        else
+            $loadavg = 0;
+
+        $statistics = new NodeStatistics($memoryUsage
+            ,$clients
+            ,$rootfsUsage
+            ,$uptime
+            ,$gateway
+            ,$loadavg
+            ,$nodeTraffic);
+        ////////
+
+
+        ////////
+        $hostname = $this->rawData['nodeinfo']['hostname'];
+
+        if(isset($this->rawData['nodeinfo']['hardware']['nproc']))
+            $nproc = $this->rawData['nodeinfo']['hardware']['nproc'];
+        else
+            $nproc = 0;
+
+        $hardware = new NodeHardware($nproc,$this->rawData['nodeinfo']['hardware']['model']);
+
+        if(isset($this->rawData['nodeinfo']['location']))
+            $location = new NodeLocation($this->rawData['nodeinfo']['location']['latitude'],$this->rawData['nodeinfo']['location']['longitude']);
+        else
+            $location = new NodeLocation(0,0);
+        if(isset($this->rawData['nodeinfo']['system']))
+            $system = new NodeSystem($this->rawData['nodeinfo']['system']['site_code']);
+        else
+            $system = new NodeSystem("");
+
+        $autoupdate = new NodeAutoupdater($this->rawData['nodeinfo']['software']['autoupdater']['branch'],$this->rawData['nodeinfo']['software']['autoupdater']['enabled']);
+        $fastd = new NodeFastd($this->rawData['nodeinfo']['software']['fastd']['version'],$this->rawData['nodeinfo']['software']['fastd']['enabled']);
+        if(isset($this->rawData['nodeinfo']['software']['batman-adv']['compat']))
+            $compat = $this->rawData['nodeinfo']['software']['batman-adv']['compat'];
+        else
+            $compat = "";
+        $batman = new NodeBadtmanAdv($this->rawData['nodeinfo']['software']['batman-adv']['version'],$compat);
+        $firmware = new NodeFirmware($this->rawData['nodeinfo']['software']['firmware']['base'],$this->rawData['nodeinfo']['software']['firmware']['release']);
+        $software = new NodeSoftware($autoupdate,$fastd,$batman,$firmware);
+
+        $node_id = $this->rawData['nodeinfo']['node_id'];
+
+        if(isset($this->rawData['nodeinfo']['owner']['contact']))
+            $owner = new NodeOwner($this->rawData['nodeinfo']['owner']['contact']);
+        else
+            $owner = new NodeOwner("");
+
+        if(isset($this->rawData['nodeinfo']['network']['mesh']))
+            $mesh = $this->rawData['nodeinfo']['network']['mesh'];
+        else
+            $mesh = "";
+
+        $network = new NodeNetwork($this->rawData['nodeinfo']['network']['addresses'],$this->rawData['nodeinfo']['network']['mesh_interfaces'],$this->rawData['nodeinfo']['network']['mac'],$mesh);
+
+        $nodeinfo = new NodeInfo();
+        $nodeinfo->setHostname($hostname);
+        $nodeinfo->setHardware($hardware);
+        $nodeinfo->setLocation($location);
+        $nodeinfo->setSystem($system);
+        $nodeinfo->setSoftware($software);
+        $nodeinfo->setNodeId($node_id);
+        $nodeinfo->setOwner($owner);
+        $nodeinfo->setNetwork($network);
+
+        ////////
+
+        ////////
+        //$node = new Node($this->rawData['firstseen'],$this->rawData['lastseen'],$flags,$statistics,$nodeinfo);
+        $this->setFirstseen($this->rawData['firstseen']);
+        $this->setLastseen($this->rawData['lastseen']);
+        $this->setFlag($flags);
+        $this->setStatistics($statistics);
+        $this->setNodeinfo($nodeinfo);
+
+
+        ////////
+    }
 
     public function fillRRDData(){
         if(!$this->checkRRDFileExists()){

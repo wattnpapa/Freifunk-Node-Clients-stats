@@ -26,9 +26,7 @@ if(isset($_GET['interval']))
 
 
 $node = new Node();
-$nodeinfo = new NodeInfo();
-$nodeinfo->setNodeId($mac);
-$node->setNodeinfo($nodeinfo);
+$node->initFromFile($mac);
 $node->makeGraph($type,$interval,$width,$height);
 
 $im = file_get_contents($node->getFileName($type,$interval,$width,$height));
