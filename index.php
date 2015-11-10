@@ -43,6 +43,8 @@ if($type == "Node"){
             <img src="getSystemGraph.php?interval=1H&width=800" />
             <h1>Last Day</h1>
             <img src="getSystemGraph.php?interval=1D&width=800" />
+            <h1>Last Week</h1>
+            <img src="getSystemGraph.php?interval=1W&width=800" />
             <h1>Last Month</h1>
             <img src="getSystemGraph.php?interval=1m&width=800" />
             <h1>Last Year</h1>
@@ -65,6 +67,13 @@ if($type == "Node"){
             <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=memoryUsage" />
             <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=rootfsUsage" />
             <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=loadavg" />
+            <h1>Last Week</h1>
+            <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=clients" />
+            <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=traffic" />
+            <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=trafficPackages" />
+            <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=memoryUsage" />
+            <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=rootfsUsage" />
+            <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=loadavg" />
             <h1>Last Month</h1>
             <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=clients" />
             <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=traffic" />
