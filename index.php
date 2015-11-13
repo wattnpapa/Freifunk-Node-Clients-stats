@@ -1,5 +1,7 @@
 <?php
 
+include("class/Node.php");
+
 $type = "System";
 $mac = "14cc2091ecd0";
 if(isset($_GET['type']))
@@ -10,11 +12,13 @@ if($type == "Node"){
         $mac = $_GET['mac'];
 }
 
+$config = json_decode(file_get_contents("config.json"),true);
+
 ?>
 
 <html>
 <head>
-    <title>Freifunk Statistics</title>
+    <title><?php echo $config["communityName"]; ?> Statistics</title>
     <!-- Bootstrap core CSS -->
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -32,7 +36,16 @@ if($type == "Node"){
                 <li role="presentation"><a href="#">Contact</a></li>
             </ul>
         </nav>-->
-        <h3 class="text-muted">Freifunk Statistics</h3>
+        <h3 class="text-muted"><?php echo $config["communityName"]; ?> Statistics
+        <?php
+            if($type == "Node"){
+                $node = new Node();
+                $node->initFromFile($mac);
+                echo " - Node: ".$node->getNodeinfo()->getHostname();
+            };
+        ?>
+
+        </h3>
     </div>
     <div class="row">
         <div class="col-lg-12">
