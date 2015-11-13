@@ -1,8 +1,10 @@
 .idea/
 Freifunk-Node-Clients-stats.iml
-!.gitkeep
-rrdData/*
-graphs/*
+rrdData/gateways/*
+rrdData/nodes/*
+rrdData/system/*
+graphs/gateways/*
+graphs/nodes/*
+graphs/system/*
 nodedata/*
-
-
+!.gitkeep
