@@ -25,6 +25,15 @@ $config = json_decode(file_get_contents("config.json"),true);
     <!-- Custom styles for this template -->
     <link href="style.css" rel="stylesheet">
 
+    <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" >
+        $('#myTabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+
+    </script>
 </head>
 <body>
 <div class="container">
@@ -47,60 +56,90 @@ $config = json_decode(file_get_contents("config.json"),true);
 
         </h3>
     </div>
+    <br>
     <div class="row">
         <div class="col-lg-12">
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#hour" aria-controls="home" role="tab" data-toggle="tab">Hour</a></li>
+                <li role="presentation"><a href="#day" aria-controls="day" role="tab" data-toggle="tab">Day</a></li>
+                <li role="presentation"><a href="#week" aria-controls="week" role="tab" data-toggle="tab">Week</a></li>
+                <li role="presentation"><a href="#month" aria-controls="month" role="tab" data-toggle="tab">Month</a></li>
+                <li role="presentation"><a href="#year" aria-controls="year" role="tab" data-toggle="tab">Year</a></li>
+            </ul>
+
+
+
+
         <?php
         if($type == "System"){
             ?>
-            <h1>Last Hour</h1>
-            <img src="getSystemGraph.php?interval=1H&width=800" />
-            <h1>Last Day</h1>
-            <img src="getSystemGraph.php?interval=1D&width=800" />
-            <h1>Last Week</h1>
-            <img src="getSystemGraph.php?interval=1W&width=800" />
-            <h1>Last Month</h1>
-            <img src="getSystemGraph.php?interval=1m&width=800" />
-            <h1>Last Year</h1>
-            <img src="getSystemGraph.php?interval=1Y&width=800" />
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="hour">
+                    <img src="getSystemGraph.php?interval=1H&width=800" />
+                </div>
+                <div role="tabpanel" class="tab-pane" id="day">
+                    <img src="getSystemGraph.php?interval=1D&width=800" />
+                </div>
+                <div role="tabpanel" class="tab-pane" id="week">
+                    <img src="getSystemGraph.php?interval=1W&width=800" />
+                </div>
+                <div role="tabpanel" class="tab-pane" id="month">
+                    <img src="getSystemGraph.php?interval=1m&width=800" />
+                </div>
+                <div role="tabpanel" class="tab-pane" id="year">
+                    <img src="getSystemGraph.php?interval=1Y&width=800" />
+                </div>
+            </div>
             <?php
         }
         if($type == "Node"){
             ?>
-            <h1>Last Hour</h1>
-            <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=clients" />
-            <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=traffic" />
-            <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=trafficPackages" />
-            <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=memoryUsage" />
-            <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=rootfsUsage" />
-            <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=loadavg" />
-            <h1>Last Day</h1>
-            <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=clients" />
-            <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=traffic" />
-            <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=trafficPackages" />
-            <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=memoryUsage" />
-            <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=rootfsUsage" />
-            <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=loadavg" />
-            <h1>Last Week</h1>
-            <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=clients" />
-            <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=traffic" />
-            <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=trafficPackages" />
-            <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=memoryUsage" />
-            <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=rootfsUsage" />
-            <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=loadavg" />
-            <h1>Last Month</h1>
-            <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=clients" />
-            <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=traffic" />
-            <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=trafficPackages" />
-            <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=memoryUsage" />
-            <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=rootfsUsage" />
-            <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=loadavg" />
-            <h1>Last Year</h1>
-            <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=clients" />
-            <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=traffic" />
-            <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=trafficPackages" />
-            <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=memoryUsage" />
-            <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=rootfsUsage" />
-            <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=loadavg" />
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="hour">
+                    <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=clients" />
+                    <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=traffic" />
+                    <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=trafficPackages" />
+                    <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=memoryUsage" />
+                    <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=rootfsUsage" />
+                    <img src="getNodeGraph.php?interval=1H&mac=<?php echo $mac;?>&type=loadavg" />
+                </div>
+                <div role="tabpanel" class="tab-pane" id="day">
+                    <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=clients" />
+                    <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=traffic" />
+                    <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=trafficPackages" />
+                    <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=memoryUsage" />
+                    <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=rootfsUsage" />
+                    <img src="getNodeGraph.php?interval=1D&mac=<?php echo $mac;?>&type=loadavg" />
+                </div>
+                <div role="tabpanel" class="tab-pane" id="week">
+                    <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=clients" />
+                    <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=traffic" />
+                    <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=trafficPackages" />
+                    <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=memoryUsage" />
+                    <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=rootfsUsage" />
+                    <img src="getNodeGraph.php?interval=1W&mac=<?php echo $mac;?>&type=loadavg" />
+                </div>
+                <div role="tabpanel" class="tab-pane" id="month">
+                    <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=clients" />
+                    <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=traffic" />
+                    <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=trafficPackages" />
+                    <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=memoryUsage" />
+                    <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=rootfsUsage" />
+                    <img src="getNodeGraph.php?interval=1m&mac=<?php echo $mac;?>&type=loadavg" />
+                </div>
+                <div role="tabpanel" class="tab-pane" id="year">
+                    <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=clients" />
+                    <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=traffic" />
+                    <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=trafficPackages" />
+                    <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=memoryUsage" />
+                    <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=rootfsUsage" />
+                    <img src="getNodeGraph.php?interval=1Y&mac=<?php echo $mac;?>&type=loadavg" />
+                </div>
+            </div>
             <?php
         }
         ?>
