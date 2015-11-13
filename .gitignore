@@ -8,3 +8,4 @@ graphs/nodes/*
 graphs/system/*
 nodedata/*
 !.gitkeep
+config.json
