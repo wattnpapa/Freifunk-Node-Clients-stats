@@ -283,7 +283,6 @@ class Node
     }
 
     private function checkReDrawGraph($filename){
-        return true;
         $filetime = filemtime($filename);
         if(!$filetime)
             return true;

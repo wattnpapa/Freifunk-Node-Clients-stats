@@ -16,6 +16,9 @@ if(isset($_GET['type']))
 if(isset($_GET['width']))
     $width = $_GET['width'];
 
+if(isset($_GET['height']))
+    $height = $_GET['height'];
+
 $system = new System();
 
 
