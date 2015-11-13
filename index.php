@@ -14,7 +14,7 @@ if($type == "Node"){
 
 <html>
 <head>
-    <title>Freifunk Statsitics</title>
+    <title>Freifunk Statistics</title>
     <!-- Bootstrap core CSS -->
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -32,7 +32,7 @@ if($type == "Node"){
                 <li role="presentation"><a href="#">Contact</a></li>
             </ul>
         </nav>-->
-        <h3 class="text-muted">Freifunk Statsitics</h3>
+        <h3 class="text-muted">Freifunk Statistics</h3>
     </div>
     <div class="row">
         <div class="col-lg-12">
