@@ -36,7 +36,7 @@ $config = json_decode(file_get_contents("config.json"),true);
                 <li role="presentation"><a href="#">Contact</a></li>
             </ul>
         </nav>-->
-        <h3 class="text-muted"><?php echo $config["communityName"]; ?> Statistics
+        <h3 class="text-muted"><img src="<?php echo $config["logoUrl"]; ?>" height="50"/>&nbsp;<?php echo $config["communityName"]; ?> Statistics
         <?php
             if($type == "Node"){
                 $node = new Node();
