@@ -283,6 +283,7 @@ class Node
     }
 
     private function checkReDrawGraph($filename){
+        return true;
         $filetime = filemtime($filename);
         if(!$filetime)
             return true;
@@ -302,7 +303,15 @@ class Node
             "--height",$height,
             "--lower=0",
             "DEF:clients=".$this->getRRDFileName().":clients:AVERAGE",
-            "AREA:clients#00FF00:Clients online",
+            "AREA:clients#00FF00:Clients online"
+            /*"COMMENT:\\n",
+            "GPRINT:clients:AVERAGE:successful attempts %6.2lf",
+            "COMMENT: ",
+            "GPRINT:clients:AVERAGE:failure attempts %6.2lf",
+            "COMMENT: ",
+            "GPRINT:clients:AVERAGE:failure attempts %6.2lf"*/,
+
+
         );
         $ret = rrd_graph($this->getFileName("clients",$start, $width, $height),$options);
         echo rrd_error();
@@ -317,6 +326,7 @@ class Node
             "--width",$width,
             "--height",$height,
             "--lower=0",
+            "--upper-limit=100",
             "DEF:memoryUsage=".$this->getRRDFileName().":memoryUsage:AVERAGE",
             "AREA:memoryUsage#00FF00:memoryUsage",
         );
@@ -333,6 +343,7 @@ class Node
             "--width",$width,
             "--height",$height,
             "--lower=0",
+            "--upper-limit=100",
             "DEF:rootfsUsage=".$this->getRRDFileName().":rootfsUsage:AVERAGE",
             "AREA:rootfsUsage#00FF00:rootfsUsage",
         );
