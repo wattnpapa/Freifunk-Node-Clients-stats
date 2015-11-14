@@ -120,7 +120,10 @@ class Node
             $system = new NodeSystem("");
 
         $autoupdate = new NodeAutoupdater($this->rawData['nodeinfo']['software']['autoupdater']['branch'],$this->rawData['nodeinfo']['software']['autoupdater']['enabled']);
-        $fastd = new NodeFastd($this->rawData['nodeinfo']['software']['fastd']['version'],$this->rawData['nodeinfo']['software']['fastd']['enabled']);
+        if(isset($this->rawData['nodeinfo']['software']['fastd']))
+            $fastd = new NodeFastd($this->rawData['nodeinfo']['software']['fastd']['version'],$this->rawData['nodeinfo']['software']['fastd']['enabled']);
+        else
+            $fastd = new NodeFastd("","");
         if(isset($this->rawData['nodeinfo']['software']['batman-adv']['compat']))
             $compat = $this->rawData['nodeinfo']['software']['batman-adv']['compat'];
         else

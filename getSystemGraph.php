@@ -6,6 +6,7 @@ include("class/System.php");
 $interval = "1d";
 $width = 800;
 $height = 200;
+$type = "clients";
 
 if(isset($_GET['interval']))
     $interval = $_GET['interval'];
@@ -21,10 +22,9 @@ if(isset($_GET['height']))
 
 $system = new System();
 
+$system->makeGraph($type,$interval,$width,$height);
 
-$system->makeGraph($interval,$width,$height);
-
-$im = file_get_contents($system->getFileURL($interval,$width,$height));
+$im = file_get_contents($system->getFileName($type,$interval,$width,$height));
 header('content-type: image/png');
 echo $im; 
 ?>

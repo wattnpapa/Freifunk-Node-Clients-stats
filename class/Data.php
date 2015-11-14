@@ -22,8 +22,6 @@ class Data
         $this->url = $url;
         $this->system = new System();
         $this->catchData();
-
-
     }
 
 
@@ -33,6 +31,7 @@ class Data
         $this->dataRaw = $this->get_remote_data($this->url);
         $this->dataClients = json_decode($this->dataRaw,true);
         $this->parseData();
+
     }
     
     private function get_remote_data($url, $post_paramtrs=false) {   
@@ -104,8 +103,12 @@ class Data
             if($node->getFlag()->getOnline()){
                 $this->system->addOnlineNode();
             }
+            else{
+                $this->system->addOfflineNode();
+            }
 
             $this->system->addClients($node->getStatistics()->getClients());
+            $this->system->addNodeFirmware($node->getNodeinfo()->getSoftware()->getFirmware()->getRelase());
 
         }
         $this->system->fillRRDData();
@@ -134,9 +137,5 @@ class Data
     {
         return $this->nodes;
     }
-
-
-
-
 
 }
