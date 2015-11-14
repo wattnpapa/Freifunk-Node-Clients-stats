@@ -165,8 +165,6 @@ class Node
         $this->setFlag($flags);
         $this->setStatistics($statistics);
         $this->setNodeinfo($nodeinfo);
-
-
         ////////
     }
 
@@ -306,14 +304,6 @@ class Node
             "--lower=0",
             "DEF:clients=".$this->getRRDFileName().":clients:AVERAGE",
             "AREA:clients#00FF00:Clients online"
-            /*"COMMENT:\\n",
-            "GPRINT:clients:AVERAGE:successful attempts %6.2lf",
-            "COMMENT: ",
-            "GPRINT:clients:AVERAGE:failure attempts %6.2lf",
-            "COMMENT: ",
-            "GPRINT:clients:AVERAGE:failure attempts %6.2lf"*/,
-
-
         );
         $ret = rrd_graph($this->getFileName("clients",$start, $width, $height),$options);
         echo rrd_error();

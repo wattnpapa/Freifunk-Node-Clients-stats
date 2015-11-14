@@ -45,6 +45,7 @@ class System
     }
 
     private function createRRDFile(){
+        //RRD File Clients / Nodes
         $options = array(
             "--step", "60",            // Use a step-size of 5 minutes
             "DS:clients:GAUGE:600:0:U",
@@ -57,6 +58,8 @@ class System
 
         $ret = rrd_create($this->rrdFile, $options);
         echo rrd_error();
+
+        //RRD File Firmware
     }
 
     private function checkRRDFile(){
@@ -92,11 +95,13 @@ class System
         if($this->checkReDrawGraph($this->getFileName($type,$interval, $width, $height))){
             switch ($type) {
                 case "clients":
-                    $this->createGraphClients($interval, "Online", $width, $height);
+                    $this->createClientsGraph($interval, "Online Clients", $width, $height);
+                    break;
+                case "nodes":
+                    $this->createNodeGraph($interval, "Online/Offline Nodes", $width, $height);
                     break;
             }
         }
-        $this->createGraphClients($interval, "Online", $width, $height);
     }
 
     private function checkReDrawGraph($filename){
@@ -109,7 +114,23 @@ class System
         return true;
     }
 
-    private function createGraphClients($start, $title, $width, $height) {
+    private function createClientsGraph($start, $title, $width, $height) {
+        $options = array(
+            "--slope-mode",
+            "--start", "-".$start,
+            "--title=$title",
+            "--vertical-label=Clients Online",
+            "--width",$width,
+            "--height",$height,
+            "--lower=0",
+            "DEF:clients=".$this->rrdFile.":clients:AVERAGE",
+            "AREA:clients#00FF00:Clients online",
+        );
+        $ret = rrd_graph($this->getFileName("clients", $start, $width, $height),$options);
+        echo rrd_error();
+    }
+
+    private function createNodeGraph($start, $title, $width, $height) {
         $options = array(
             "--slope-mode",
             "--start", "-".$start,
@@ -118,14 +139,12 @@ class System
             "--width",$width,
             "--height",$height,
             "--lower=0",
-            "DEF:clients=".$this->rrdFile.":clients:AVERAGE",
             "DEF:nodesOnline=".$this->rrdFile.":nodesOnline:AVERAGE",
             "DEF:nodesOffline=".$this->rrdFile.":nodesOffline:AVERAGE",
-            "AREA:clients#00FF00:Clients online",
-            "LINE2:nodesOnline#0066cc:nodesOnline",
-            "LINE2:nodesOffline#ff00cc:nodesOffline",
+            "AREA:nodesOffline#ff0000:nodesOffline",
+            "STACK:nodesOnline#00FF00:nodesOnline",
         );
-        $ret = rrd_graph($this->getFileName("clients", $start, $width, $height),$options);
+        $ret = rrd_graph($this->getFileName("nodes", $start, $width, $height),$options);
         echo rrd_error();
     }
 
