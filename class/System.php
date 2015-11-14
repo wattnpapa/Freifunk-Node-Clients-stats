@@ -6,6 +6,10 @@
  * Date: 08.11.15
  * Time: 12:12
  */
+include("RRD.php");
+include("FirmwareRRDDSMapping.php");
+include("ColorTable.php");
+
 class System
 {
     private $counterClients;
@@ -14,7 +18,10 @@ class System
     private $nodeFirmware;
     private $autoupdater;
 
-    private $rrdPath;
+    private $rrdFile;
+    private $rrdFirmwareFile;
+
+    private $fimwareMapper;
 
     /**
      * System constructor.
@@ -28,7 +35,10 @@ class System
 
 
         $this->rrdFile = dirname(__FILE__)."/../rrdData/system/system.rrd";
+        $this->rrdFirmwareFile = dirname(__FILE__)."/../rrdData/system/firmware.rrd";
         $this->graphFolder = dirname(__FILE__)."/../graphs/system/";
+
+        $this->fimwareMapper = new FirmwareRRDDSMapping();
 
     }
 
@@ -59,11 +69,29 @@ class System
         $ret = rrd_create($this->rrdFile, $options);
         echo rrd_error();
 
-        //RRD File Firmware
+    }
+
+    private function createFirmwareRRDFile(){
+        $initFirmware = "0.6";
+        $initCodeFirmware = $this->fimwareMapper->addNameToMapping($initFirmware);
+        $options = array(
+            "--step", "60",            // Use a step-size of 5 minutes
+            "DS:".$initCodeFirmware.":GAUGE:600:0:U",
+            "RRA:AVERAGE:0.5:1:10080", //every minute one week
+            "RRA:AVERAGE:0.5:60:8760", //
+            "RRA:AVERAGE:0.5:1440:5256",
+        );
+        echo "\n\nCREATE\n\n";
+        $ret = rrd_create($this->rrdFirmwareFile, $options);
+        echo rrd_error();
     }
 
     private function checkRRDFile(){
         return file_exists($this->rrdFile);
+    }
+
+    private function checkFirmwareRRDFile(){
+        return file_exists($this->rrdFirmwareFile);
     }
 
     public function getFileName($type, $interval, $width, $height){
@@ -89,6 +117,39 @@ class System
 
         $ret = rrd_update($this->rrdFile, array($string));
         echo rrd_error();
+
+        $this->fillFirmwareRRDData();
+    }
+
+    public function fillFirmwareRRDData(){
+        if(!$this->checkFirmwareRRDFile()){
+            echo "\n\nCreate FIRMWARE RRD\n\n";
+            $this->createFirmwareRRDFile();
+        }
+
+        $data = Array();
+        $data[] = time();
+
+        $firmwareDS = RRD::getDSFromRRDFile($this->rrdFirmwareFile);
+        $tmpfirmware = array();
+        foreach ($this->nodeFirmware as $key => $value){
+            $firmKey = $this->fimwareMapper->addNameToMapping($key);
+            if(!in_array($firmKey,$firmwareDS)){
+                $firmwareDS[] = $key;
+                RRD::addDS2RRDFile($this->rrdFirmwareFile,$firmKey,"GAUGE",600,0,"U");
+            }
+            $tmpfirmware[$firmKey] = $value;
+        }
+
+        foreach($firmwareDS as $firm){
+            //echo $firm."\n";
+            $data[] = $tmpfirmware[$firm];
+        }
+
+        $string = implode(":",$data);
+
+        $ret = rrd_update($this->rrdFirmwareFile, array($string));
+        echo rrd_error();
     }
 
     public function makeGraph($type, $interval, $width, $height){
@@ -100,11 +161,15 @@ class System
                 case "nodes":
                     $this->createNodeGraph($interval, "Online/Offline Nodes", $width, $height);
                     break;
+                case "firmware":
+                    $this->createFirmwareGraph($interval, "Firmware Versions", $width, $height);
+                    break;
             }
         }
     }
 
     private function checkReDrawGraph($filename){
+        return true;
         $filetime = filemtime($filename);
         if(!$filetime)
             return true;
@@ -147,6 +212,34 @@ class System
         $ret = rrd_graph($this->getFileName("nodes", $start, $width, $height),$options);
         echo rrd_error();
     }
+
+    private function createFirmwareGraph($start, $title, $width, $height) {
+        $options = array(
+            "--slope-mode",
+            "--start", "-".$start,
+            "--title=$title",
+            "--vertical-label=Firmware",
+            "--width",$width,
+            "--height",$height,
+            "--lower=0"
+        );
+        $firmwareDS = RRD::getDSFromRRDFile($this->rrdFirmwareFile);
+        for($i = 0;$i < count($firmwareDS); $i++){
+            $firmware = $firmwareDS[$i];
+            $options[] = "DEF:".$firmware."=".$this->rrdFirmwareFile.":".$firmware.":AVERAGE";
+            if($i == 0)
+                $options[] = "AREA:".$firmware.ColorTable::getColor($i).":".$this->fimwareMapper->getNameForCode($firmware);
+            else
+                $options[] = "STACK:".$firmware.ColorTable::getColor($i).":".$this->fimwareMapper->getNameForCode($firmware);
+            //echo $firmware."<br>";
+        }
+        //print_r($options);
+
+
+        $ret = rrd_graph($this->getFileName("firmware", $start, $width, $height),$options);
+        echo rrd_error();
+    }
+
 
     /**
      * @return mixed

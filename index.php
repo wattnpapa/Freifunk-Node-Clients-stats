@@ -80,22 +80,27 @@ $config = json_decode(file_get_contents("config.json"),true);
                 <div role="tabpanel" class="tab-pane active" id="hour">
                     <img src="getSystemGraph.php?type=clients&interval=1H&width=800" />
                     <img src="getSystemGraph.php?type=nodes&interval=1H&width=800" />
+                    <img src="getSystemGraph.php?type=firmware&interval=1H&width=800" />
                 </div>
                 <div role="tabpanel" class="tab-pane" id="day">
                     <img src="getSystemGraph.php?type=clients&interval=1D&width=800" />
                     <img src="getSystemGraph.php?type=nodes&interval=1D&width=800" />
+                    <img src="getSystemGraph.php?type=firmware&interval=1D&width=800" />
                 </div>
                 <div role="tabpanel" class="tab-pane" id="week">
                     <img src="getSystemGraph.php?type=clients&interval=1W&width=800" />
                     <img src="getSystemGraph.php?type=nodes&interval=1W&width=800" />
+                    <img src="getSystemGraph.php?type=firmware&interval=1W&width=800" />
                 </div>
                 <div role="tabpanel" class="tab-pane" id="month">
                     <img src="getSystemGraph.php?type=clients&interval=1m&width=800" />
                     <img src="getSystemGraph.php?type=nodes&interval=1m&width=800" />
+                    <img src="getSystemGraph.php?type=firmware&interval=1m&width=800" />
                 </div>
                 <div role="tabpanel" class="tab-pane" id="year">
                     <img src="getSystemGraph.php?type=clients&interval=1Y&width=800" />
                     <img src="getSystemGraph.php?type=nodes&interval=1Y&width=800" />
+                    <img src="getSystemGraph.php?type=firmware&interval=1Y&width=800" />
                 </div>
             </div>
             <?php

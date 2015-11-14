@@ -22,4 +22,9 @@ class RRD
         }
         return $ds;
     }
+
+    public static function addDS2RRDFile($rrdfile,$dsname,$type,$heartbeat,$min,$max){
+        $option = array("DS:".$dsname.":".$type.":".$heartbeat.":".$min.":".$max);
+        rrd_tune($rrdfile,$option);
+    }
 }

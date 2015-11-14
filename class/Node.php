@@ -34,6 +34,7 @@ class Node
     private function readRawData($mac){
         $fd = fopen($this->getRawFilePath($mac), 'r');
         $this->rawDataJson = fread($fd,filesize($this->getRawFilePath($mac)));
+        fclose($fd);
         $this->rawData = json_decode($this->rawDataJson,true);
         $this->parseRawData();
     }
