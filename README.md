@@ -9,11 +9,26 @@ php5-curl
 
 ## Installation
 
-## Config File
+1. Clone The Repo
+2. Make the config File
+3. Make a entry in your Crontab
+
+### Clone The Repo
+
+```
+git clonehttps://github.com/PowerPan/Freifunk-Node-Clients-stats.git
+```
+### Config File
 
 You must make a config.json File. You can use the config.json.example as an Template
 
 In The Configfile you can enter the Data Crawl URL, the Name of your Community and the Logo URL.
+
+### Crontab
+
+```
+bash createCronTabEntry.sh
+```
 
 ## Get Images
 
