@@ -21,6 +21,10 @@ class FirmwareRRDDSMapping
     }
 
     private function readFromFile(){
+        if(!file_exists($this->mappingFile)){
+            $this->mapping = array();
+            $this->wrtieToFile();
+        }
         $fd = fopen($this->mappingFile, 'r');
         $this->mapping = json_decode(fread($fd,filesize($this->mappingFile)),true);
         fclose($fd);
@@ -38,7 +42,7 @@ class FirmwareRRDDSMapping
 
     public function getCodeForName($name){
         $pattern = "/([^a-zA-Z0-9]+)/";
-        $code = preg_replace($pattern,"",$name);
+        $code = preg_replace($pattern,"_",$name);
         $code = substr($code,0,15);
         return $code;
     }
