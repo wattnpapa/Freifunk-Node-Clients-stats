@@ -56,34 +56,21 @@ class System
 
     private function createRRDFile(){
         //RRD File Clients / Nodes
-        $options = array(
-            "--step", "60",            // Use a step-size of 5 minutes
+        $dataSources = array(
             "DS:clients:GAUGE:600:0:U",
             "DS:nodesOnline:GAUGE:600:0:U",
-            "DS:nodesOffline:GAUGE:600:0:U",
-            "RRA:AVERAGE:0.5:1:10080", //every minute one week
-            "RRA:AVERAGE:0.5:60:8760", //
-            "RRA:AVERAGE:0.5:1440:5256",
-        );
-
-        $ret = rrd_create($this->rrdFile, $options);
-        echo rrd_error();
+            "DS:nodesOffline:GAUGE:600:0:U");
+        $options = RRD::getRRDFileOptions($dataSources);
+        RRD::createRRDFile($this->rrdFile,$options);
 
     }
 
     private function createFirmwareRRDFile(){
         $initFirmware = "0.6";
         $initCodeFirmware = $this->fimwareMapper->addNameToMapping($initFirmware);
-        $options = array(
-            "--step", "60",            // Use a step-size of 5 minutes
-            "DS:".$initCodeFirmware.":GAUGE:600:0:U",
-            "RRA:AVERAGE:0.5:1:10080", //every minute one week
-            "RRA:AVERAGE:0.5:60:8760", //
-            "RRA:AVERAGE:0.5:1440:5256",
-        );
-        echo "\n\nCREATE\n\n";
-        $ret = rrd_create($this->rrdFirmwareFile, $options);
-        echo rrd_error();
+        $dataSources = array("DS:".$initCodeFirmware.":GAUGE:600:0:U",);
+        $options = RRD::getRRDFileOptions($dataSources);
+        RRD::createRRDFile($this->rrdFirmwareFile,$options);
     }
 
     private function checkRRDFile(){
