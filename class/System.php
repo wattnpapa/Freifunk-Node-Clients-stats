@@ -211,6 +211,7 @@ class System
             "--lower=0"
         );
         $firmwareDS = RRD::getDSFromRRDFile($this->rrdFirmwareFile);
+        sort($firmwareDS);
         for($i = 0;$i < count($firmwareDS); $i++){
             $firmware = $firmwareDS[$i];
             $options[] = "DEF:".$firmware."=".$this->rrdFirmwareFile.":".$firmware.":AVERAGE";
