@@ -13,4 +13,4 @@ $rrdFileNodes = dirname(__FILE__)."../rrdData/system/system.rrd";
 //Rename nodes to nodesOnline
 rrd_tune($rrdFileNodes,array("--data-source-rename","nodes:nodesOnline"));
 
-RRD::addDS2RRDFile($rrdFileNodes,array("nodesOffline"));
+RRD::addDS2RRDFile($rrdFileNodes,"nodesOffline");
