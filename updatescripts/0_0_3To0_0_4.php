@@ -8,7 +8,7 @@
 
 include("../class/RRD.php");
 
-$rrdFileNodes = "../rrdData/system/system.rrd";
+$rrdFileNodes = dirname(__FILE__)."../rrdData/system/system.rrd";
 
 //Rename nodes to nodesOnline
 rrd_tune($rrdFileNodes,array("--data-source-rename","nodes:nodesOnline"));
