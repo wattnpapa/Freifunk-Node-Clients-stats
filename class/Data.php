@@ -1,7 +1,7 @@
 <?php
 
-include("Node.php");
-include("System.php");
+include(dirname(__FILE__)."/Node.php");
+include(dirname(__FILE__)."/System.php");
 
 class Data
 {
