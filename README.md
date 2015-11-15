@@ -9,9 +9,11 @@ php5-curl
 
 ## Installation
 
-## Usage
+## Config File
 
-By Some URL Parameters you can Modify some Stuff of every Graph
+You must make a config.json File. You can use the config.json.example as an Template
+
+In The Configfile you can enter the Data Crawl URL, the Name of your Community and the Logo URL.
 
 ## Get Images
 
