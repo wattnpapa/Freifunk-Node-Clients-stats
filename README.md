@@ -4,8 +4,9 @@ This project creates Freifunk Node Statistics on demand.
 
 ## Requierments
 
-php5-rrd
-php5-curl
+* rrdtool > 1.5.0
+* php5-rrd
+* php5-curl
 
 ## Installation
 
