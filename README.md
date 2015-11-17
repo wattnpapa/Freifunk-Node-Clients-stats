@@ -2,6 +2,26 @@
 
 This project creates Freifunk Node Statistics on demand.
 
+## Examples System Stats
+
+### Online Clients
+
+![Online Clients](https://stats.ffnw.de/getSystemGraph.php?type=clients&interval=1W&width=800)
+
+### Online/Offline Nodes
+
+![Online Nodes](https://stats.ffnw.de/getSystemGraph.php?type=nodes&interval=1W&width=800)
+
+## Examples Client Stats
+
+### Online Clients 
+
+![Online Clients](https://stats.ffnw.de/getNodeGraph.php?interval=1W&mac=6466b38a58f2&type=clients)
+
+### Traffic
+
+![Online Clients](https://stats.ffnw.de/getNodeGraph.php?interval=1W&mac=6466b38a58f2&type=traffic)
+
 ## Requierments
 
 * rrdtool > 1.5.0
