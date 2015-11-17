@@ -16,7 +16,7 @@ php5-curl
 ### Clone The Repo
 
 ```
-git clonehttps://github.com/PowerPan/Freifunk-Node-Clients-stats.git
+git clone https://github.com/PowerPan/Freifunk-Node-Clients-stats.git
 ```
 ### Config File
 
