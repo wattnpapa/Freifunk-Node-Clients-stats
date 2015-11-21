@@ -10,7 +10,7 @@ class RRD
 {
     public static function getDSFromRRDFile($file){
         $info = rrd_info($file);
-        $suchmuster = "/(ds\[)(.*[a-zA-Z0-9])(\])/";
+        $suchmuster = "/(ds\[)(.*[a-zA-Z0-9_])(\])/";
         $ds = array();
         foreach ($info as $key => $value){
             preg_match($suchmuster, $key, $treffer);
@@ -26,6 +26,7 @@ class RRD
     public static function addDS2RRDFile($rrdFileName,$newDS){
         //Get Existing Datasources
         $datassources = self::getDSFromRRDFile($rrdFileName);
+
         //Add New DataSources
         $datassources[] = $newDS;
 
