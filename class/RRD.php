@@ -76,4 +76,9 @@ class RRD
         return "DS:".$dsname.":GAUGE:600:0:U";
     }
 
+    public static function createRRDGraph($filename,$options){
+        $ret = rrd_graph($filename,$options);
+        echo rrd_error();
+    }
+
 }
