@@ -180,8 +180,7 @@ class System
             "DEF:clients=".$this->rrdFile.":clients:AVERAGE",
             "AREA:clients#00FF00:Clients online",
         );
-        $ret = rrd_graph($this->getFileName("clients", $start, $width, $height),$options);
-        echo rrd_error();
+        RRD::createRRDGraph($this->getFileName("clients", $start, $width, $height),$options);
     }
 
     private function createNodeGraph($start, $title, $width, $height) {
@@ -198,8 +197,7 @@ class System
             "AREA:nodesOffline#ff0000:nodesOffline",
             "STACK:nodesOnline#00FF00:nodesOnline",
         );
-        $ret = rrd_graph($this->getFileName("nodes", $start, $width, $height),$options);
-        echo rrd_error();
+        RRD::createRRDGraph($this->getFileName("nodes", $start, $width, $height),$options);
     }
 
     private function createFirmwareGraph($start, $title, $width, $height) {
@@ -225,9 +223,7 @@ class System
         }
         //print_r($options);
 
-
-        $ret = rrd_graph($this->getFileName("firmware", $start, $width, $height),$options);
-        echo rrd_error();
+        RRD::createRRDGraph($this->getFileName("firmware", $start, $width, $height),$options);
     }
 
 
