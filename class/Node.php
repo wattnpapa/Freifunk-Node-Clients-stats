@@ -306,8 +306,8 @@ class Node
             "DEF:clients=".$this->getRRDFileName().":clients:AVERAGE",
             "AREA:clients#00FF00:Clients online"
         );
-        $ret = rrd_graph($this->getFileName("clients",$start, $width, $height),$options);
-        echo rrd_error();
+        RRD::createRRDGraph($this->getFileName("clients", $start, $width, $height),$options);
+
     }
 
     private function createGraphMemory($start, $title, $width, $height) {
@@ -323,8 +323,7 @@ class Node
             "DEF:memoryUsage=".$this->getRRDFileName().":memoryUsage:AVERAGE",
             "AREA:memoryUsage#00FF00:memoryUsage",
         );
-        $ret = rrd_graph($this->getFileName("memoryUsage",$start, $width, $height),$options);
-        echo rrd_error();
+        RRD::createRRDGraph($this->getFileName("memoryUsage", $start, $width, $height),$options);
     }
 
     private function createGraphRootFs($start, $title, $width, $height) {
@@ -340,8 +339,7 @@ class Node
             "DEF:rootfsUsage=".$this->getRRDFileName().":rootfsUsage:AVERAGE",
             "AREA:rootfsUsage#00FF00:rootfsUsage",
         );
-        $ret = rrd_graph($this->getFileName("rootfsUsage",$start, $width, $height),$options);
-        echo rrd_error();
+        RRD::createRRDGraph($this->getFileName("rootfsUsage", $start, $width, $height),$options);
     }
 
     private function createGraphLoadAvg($start, $title, $width, $height) {
@@ -356,8 +354,7 @@ class Node
             "DEF:loadavg=".$this->getRRDFileName().":loadavg:AVERAGE",
             "AREA:loadavg#00FF00:loadavg",
         );
-        $ret = rrd_graph($this->getFileName("loadavg",$start, $width, $height),$options);
-        echo rrd_error();
+        RRD::createRRDGraph($this->getFileName("loadavg", $start, $width, $height),$options);
     }
     
     private function createGraphTraffic($start, $title, $width, $height) {
@@ -380,8 +377,7 @@ class Node
             "LINE2:trafMgmtRxBy#FFFF0F:trafMgmtRxBy",
             "LINE2:trafForwardBy#124f77:trafForwardBy",
         );
-        $ret = rrd_graph($this->getFileName("traffic",$start, $width, $height),$options);
-        echo rrd_error();
+        RRD::createRRDGraph($this->getFileName("traffic", $start, $width, $height),$options);
     }
 
     private function createGraphTrafficPackages($start, $title, $width, $height) {
@@ -404,8 +400,7 @@ class Node
             "LINE2:trafMgmtRxPa#FFFF0F:trafMgmtRxPa",
             "LINE2:trafForwardPa#124f77:trafForwardPa",
         );
-        $ret = rrd_graph($this->getFileName("trafficPackages",$start, $width, $height),$options);
-        echo rrd_error();
+        RRD::createRRDGraph($this->getFileName("trafficPackages", $start, $width, $height),$options);
     }
 
      
