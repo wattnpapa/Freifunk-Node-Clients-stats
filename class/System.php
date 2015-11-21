@@ -71,6 +71,8 @@ class System
         $dataSources = array("DS:".$initCodeFirmware.":GAUGE:600:0:U",);
         $options = RRD::getRRDFileOptions($dataSources);
         RRD::createRRDFile($this->rrdFirmwareFile,$options);
+        print_r($options);
+        echo "\n\n\nFIRMWARE CREATED\n\n\n";
     }
 
     private function checkRRDFile(){
