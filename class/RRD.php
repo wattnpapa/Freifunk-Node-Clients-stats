@@ -44,9 +44,14 @@ class RRD
         rename($rrdFileName,$tmpFileName);
 
         //add source options
-        $rrdOptions[] = "--source";
+        $rrdOptions[] = "-r";
         $rrdOptions[] = $tmpFileName;
 
+        echo "\n\nUPDATE RRD\n\n";
+        print_r($rrdOptions);
+        echo "\n\n+++++++++++\n\n";
+        echo $rrdFileName;
+        echo "\n\n###########\n\n";
         //create new RRDFile
         RRD::createRRDFile($rrdFileName,$rrdOptions);
     }
