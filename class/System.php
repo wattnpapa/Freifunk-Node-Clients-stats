@@ -259,8 +259,15 @@ class System
             "--height",$height,
             "--lower=0"
         );
-        $firmwareDS = RRD::getDSFromRRDFile($this->rrdFirmwareFile);
-        sort($firmwareDS);
+        //$firmwareDS = RRD::getDSFromRRDFile($this->rrdFirmwareFile);
+        //sort($firmwareDS);
+        $firmwareDS = array();
+        $firmwareDSsort = $this->fimwareMapper->getMappingSort();
+
+        foreach($firmwareDSsort as $key => $value){
+            $firmwareDS[] = $key;
+        }
+
         for($i = 0;$i < count($firmwareDS); $i++){
             $firmware = $firmwareDS[$i];
             $options[] = "DEF:".$firmware."=".$this->rrdFirmwareFile.":".$firmware.":AVERAGE";
@@ -285,8 +292,16 @@ class System
             "--height",$height,
             "--lower=0"
         );
-        $hardwareDS = RRD::getDSFromRRDFile($this->rrdHardwareFile);
-        sort($hardwareDS);
+        //$hardwareDS = RRD::getDSFromRRDFile($this->rrdHardwareFile);
+        //sort($hardwareDS);
+
+        $hardwareDS = array();
+        $hardwareDSsort = $this->hardwareMapper->getMappingSort();
+
+        foreach($hardwareDSsort as $key => $value){
+            $hardwareDS[] = $key;
+        }
+
         for($i = 0;$i < count($hardwareDS); $i++){
             $hardware = $hardwareDS[$i];
             $options[] = "DEF:".$hardware."=".$this->rrdHardwareFile.":".$hardware.":AVERAGE";

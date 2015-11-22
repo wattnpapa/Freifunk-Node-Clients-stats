@@ -56,5 +56,12 @@ abstract class RRDDSMapping
         return $code;
     }
 
+    public function getMappingSort(){
+        $values = $this->mapping;
+        asort($values);
+        return $values;
+
+    }
+
 
 }
