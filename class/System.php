@@ -6,7 +6,7 @@
  * Date: 08.11.15
  * Time: 12:12
  */
-include("RRD.php");
+include_once("RRD.php");
 include("FirmwareRRDDSMapping.php");
 include("HardwareRRDDSMapping.php");
 include("ColorTable.php");
