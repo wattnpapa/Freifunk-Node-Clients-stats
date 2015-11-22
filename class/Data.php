@@ -110,7 +110,7 @@ class Data
             $this->system->addClients($node->getStatistics()->getClients());
             $this->system->addNodeFirmware($node->getNodeinfo()->getSoftware()->getFirmware()->getRelase());
             $this->system->addNodeHardware($node->getNodeinfo()->getHardware()->getModel());
-
+            $this->system->addMeshConnections(count($node->getNodeinfo()->getNetwork()->getMeshInterfaces()));
 
         }
         $this->system->fillRRDData();

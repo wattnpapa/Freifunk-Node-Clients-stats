@@ -33,6 +33,7 @@ class System
         $this->counterClients = 0;
         $this->counterOnlineNodes = 0;
         $this->counterOfflineNodes = 0;
+        $this->counterMeshConnections = 0;
         $this->nodeFirmware = array();
         $this->nodeHardware = array();
 
@@ -51,6 +52,10 @@ class System
         $this->counterClients += $clients;
     }
 
+    public function addMeshConnections($connections){
+        $this->counterMeshConnections += $connections;
+    }
+
     public function addOnlineNode(){
         $this->counterOnlineNodes++;
     }
@@ -64,7 +69,8 @@ class System
         $dataSources = array(
             "DS:clients:GAUGE:600:0:U",
             "DS:nodesOnline:GAUGE:600:0:U",
-            "DS:nodesOffline:GAUGE:600:0:U");
+            "DS:nodesOffline:GAUGE:600:0:U",
+            "DS:meshConnections:GAUGE:600:0:U");
         $options = RRD::getRRDFileOptions($dataSources);
         RRD::createRRDFile($this->rrdFile,$options);
 
@@ -108,12 +114,18 @@ class System
             $this->createRRDFile();
         }
 
+        $ds = RRD::getDSFromRRDFile($this->rrdFile);
+        if(!in_array("meshConnections",$ds)){
+            RRD::addDS2RRDFile($this->rrdFile,"meshConnections","GAUGE",600,0,"U");
+        }
+
         $data = Array();
         $data[] = time();
 
         $data[] = $this->counterClients;
         $data[] = $this->counterOnlineNodes;
         $data[] = $this->counterOfflineNodes;
+        $data[] = $this->counterMeshConnections/2;
 
         $string = implode(":",$data);
 
@@ -201,6 +213,9 @@ class System
                 case "hardware":
                     $this->createHardwareGraph($interval, "Hardware Models", $width, $height);
                     break;
+                case "meshConnections":
+                    $this->createMeshConnectionsGraph($interval, "Mesh Connections", $width, $height);
+                    break;
             }
         }
     }
@@ -231,6 +246,21 @@ class System
             "AREA:clients#00FF00:Clients online",
         );
         RRD::createRRDGraph($this->getFileName("clients", $start, $width, $height),$options);
+    }
+
+    private function createMeshConnectionsGraph($start, $title, $width, $height) {
+        $options = array(
+            "--slope-mode",
+            "--start", "-".$start,
+            "--title=$title",
+            "--vertical-label=Mesh Connections",
+            "--width",$width,
+            "--height",$height,
+            "--lower=0",
+            "DEF:meshConnections=".$this->rrdFile.":meshConnections:AVERAGE",
+            "AREA:meshConnections#00FF00:Mesh Connections",
+        );
+        RRD::createRRDGraph($this->getFileName("meshConnections", $start, $width, $height),$options);
     }
 
     private function createNodeGraph($start, $title, $width, $height) {
