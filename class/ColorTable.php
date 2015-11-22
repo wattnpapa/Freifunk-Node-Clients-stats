@@ -21,6 +21,32 @@ class ColorTable
         "#CC0000",
         "#00CC00",
         "#0000CC",
+
+        "#1100FF",
+        "#FF1100",
+        "#00FF11",
+        "#11FF00",
+        "#0011FF",
+        "#FF0011",
+        "#FFFF00",
+        "#00FFFF",
+        "#FF00FF",
+        "#FF0000",
+        "#00FF00",
+        "#0000FF",
+
+        "#6633CC",
+        "#CC6633",
+        "#33CC66",
+        "#66CC33",
+        "#3366CC",
+        "#CC3366",
+        "#CCCC33",
+        "#33CCCC",
+        "#CC33CC",
+        "#CC3333",
+        "#33CC33",
+        "#3333CC",
     );
 
     public static function getColor($index){
