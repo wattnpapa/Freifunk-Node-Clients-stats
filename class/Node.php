@@ -286,7 +286,7 @@ class Node
     }
 
     private function checkReDrawGraph($filename){
-        @$filetime = filemtime($filename);
+        $filetime = filemtime($filename);
         if(!$filetime)
             return true;
         if( ($filetime+60) > time() ){
