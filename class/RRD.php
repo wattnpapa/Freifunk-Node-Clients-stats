@@ -54,7 +54,7 @@ class RRD
         echo "\n\n###########\n\n";
         //create new RRDFile
         //RRD::createRRDFile($rrdFileName,$rrdOptions);
-        $cmd = "rrdtool create ".$rrdFileName." ".implode(" ",$rrdOptions);
+        $cmd = "rrdcreate ".$rrdFileName." ".implode(" ",$rrdOptions);
         echo $cmd;
         echo "\n";
         shell_exec($cmd);
