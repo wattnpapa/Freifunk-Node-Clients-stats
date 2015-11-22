@@ -3,7 +3,7 @@
 include("NodeFlags.php");
 include("NodeStatistics.php");
 include("NodeInfo.php");
-include("RRD.php");
+include_once("RRD.php");
 
 class Node
 {
