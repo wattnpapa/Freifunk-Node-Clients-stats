@@ -337,11 +337,14 @@ class System
             $hardware = $hardwareDS[$i];
             $options[] = "DEF:".$hardware."=".$this->rrdHardwareFile.":".$hardware.":AVERAGE";
             if($i == 0)
-                $options[] = "AREA:".$hardware.ColorTable::getColor($i).":".$this->hardwareMapper->getNameForCode($hardware)."\l";
+                $options[] = "AREA:".$hardware.ColorTable::getColor($i).":".$this->hardwareMapper->getNameForCode($hardware)."\t";
             else
-                $options[] = "STACK:".$hardware.ColorTable::getColor($i).":".$this->hardwareMapper->getNameForCode($hardware)."\l";
+                $options[] = "STACK:".$hardware.ColorTable::getColor($i).":".$this->hardwareMapper->getNameForCode($hardware)."\t";
+            $options[] =  'GPRINT:'.$hardware.':AVERAGE:%8.0lf %s\l';
         }
-
+        //print_r($options);
+        $options[] = "--tabwidth";
+        $options[] = "350";
         RRD::createRRDGraph($this->getFileName("hardware", $start, $width, $height),$options);
     }
 
