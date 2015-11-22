@@ -8,10 +8,25 @@ include_once("RRD.php");
 class Node
 {
 
+    /**
+     * @var
+     */
     private $firstseen;
+    /**
+     * @var
+     */
     private $lastseen;
+    /**
+     * @var
+     */
     private $flag;
+    /**
+     * @var NodeStatistics
+     */
     private $statistics;
+    /**
+     * @var NodeInfo
+     */
     private $nodeinfo;
 
     private $rawDataJson;
@@ -454,7 +469,7 @@ class Node
     }
 
     /**
-     * @return mixed
+     * @return NodeStatistics
      */
     public function getStatistics()
     {
@@ -462,7 +477,7 @@ class Node
     }
 
     /**
-     * @param mixed $statistics
+     * @param NodeStatistics $statistics
      */
     public function setStatistics($statistics)
     {
@@ -470,7 +485,7 @@ class Node
     }
 
     /**
-     * @return mixed
+     * @return NodeInfo
      */
     public function getNodeinfo()
     {
@@ -478,7 +493,7 @@ class Node
     }
 
     /**
-     * @param mixed $nodeinfo
+     * @param NodeInfo $nodeinfo
      */
     public function setNodeinfo($nodeinfo)
     {

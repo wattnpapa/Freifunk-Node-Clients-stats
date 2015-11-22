@@ -111,6 +111,7 @@ class Data
             $this->system->addNodeFirmware($node->getNodeinfo()->getSoftware()->getFirmware()->getRelase());
             $this->system->addNodeHardware($node->getNodeinfo()->getHardware()->getModel());
 
+
         }
         $this->system->fillRRDData();
     }

@@ -1,8 +1,13 @@
 <?php
 
 
+/**
+ * Class NodeNetwork
+ */
 class NodeNetwork
 {
+
+
     private $addresses;
     private $mesh_interfaces;
     private $mac;

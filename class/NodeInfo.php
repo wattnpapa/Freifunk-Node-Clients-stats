@@ -9,13 +9,38 @@ include("NodeNetwork.php");
 
 class NodeInfo
 {
+
+    /**
+     * @var
+     */
     private $hostname;
+    /**
+     * @var NodeHardware
+     */
     private $hardware;
+    /**
+     * @var NodeLocation
+     */
     private $location;
+    /**
+     * @var NodeSystem
+     */
     private $system;
+    /**
+     * @var NodeSoftware
+     */
     private $software;
+    /**
+     * @var
+     */
     private $node_id;
+    /**
+     * @var
+     */
     private $owner;
+    /**
+     * @var NodeNetwork
+     */
     private $network;
 
     /**
@@ -35,7 +60,7 @@ class NodeInfo
     }
 
     /**
-     * @return mixed
+     * @return NodeHardware
      */
     public function getHardware()
     {
@@ -43,7 +68,7 @@ class NodeInfo
     }
 
     /**
-     * @param mixed $hardware
+     * @param NodeHardware $hardware
      */
     public function setHardware($hardware)
     {
@@ -51,7 +76,7 @@ class NodeInfo
     }
 
     /**
-     * @return mixed
+     * @return NodeLocation
      */
     public function getLocation()
     {
@@ -59,7 +84,7 @@ class NodeInfo
     }
 
     /**
-     * @param mixed $location
+     * @param NodeLocation $location
      */
     public function setLocation($location)
     {
@@ -67,7 +92,7 @@ class NodeInfo
     }
 
     /**
-     * @return mixed
+     * @return NodeSystem
      */
     public function getSystem()
     {
@@ -75,7 +100,7 @@ class NodeInfo
     }
 
     /**
-     * @param mixed $system
+     * @param NodeSystem $system
      */
     public function setSystem($system)
     {
@@ -83,7 +108,7 @@ class NodeInfo
     }
 
     /**
-     * @return mixed
+     * @return NodeSoftware
      */
     public function getSoftware()
     {
@@ -91,7 +116,7 @@ class NodeInfo
     }
 
     /**
-     * @param mixed $software
+     * @param NodeSoftware $software
      */
     public function setSoftware($software)
     {
@@ -131,7 +156,7 @@ class NodeInfo
     }
 
     /**
-     * @return mixed
+     * @return NodeNetwork
      */
     public function getNetwork()
     {
@@ -139,7 +164,7 @@ class NodeInfo
     }
 
     /**
-     * @param mixed $network
+     * @param NodeNetwork $network
      */
     public function setNetwork($network)
     {

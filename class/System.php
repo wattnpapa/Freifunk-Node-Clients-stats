@@ -158,7 +158,6 @@ class System
 
     public function fillHardwareRRDData(){
         if(!$this->checkHardwareRRDFile()){
-            echo "create Hardware";
             $this->createHardwareRRDFile();
         }
 
@@ -207,6 +206,9 @@ class System
     }
 
     private function checkReDrawGraph($filename){
+        return true;
+        if(!file_exists($filename))
+            return true;
         $filetime = filemtime($filename);
         if(!$filetime)
             return true;
@@ -225,7 +227,7 @@ class System
             "--width",$width,
             "--height",$height,
             "--lower=0",
-            "DEF:clients=".$this->rrdFile.":clients:AVERAGE",
+            "DEF:clients=".$this->rrdFile.":clients:MIN",
             "AREA:clients#00FF00:Clients online",
         );
         RRD::createRRDGraph($this->getFileName("clients", $start, $width, $height),$options);
@@ -271,9 +273,9 @@ class System
             $firmware = $firmwareDS[$i];
             $options[] = "DEF:".$firmware."=".$this->rrdFirmwareFile.":".$firmware.":AVERAGE";
             if($i == 0)
-                $options[] = "AREA:".$firmware.ColorTable::getColor($i).":".$this->fimwareMapper->getNameForCode($firmware);
+                $options[] = "AREA:".$firmware.ColorTable::getColor($i).":".$this->fimwareMapper->getNameForCode($firmware)."\l";
             else
-                $options[] = "STACK:".$firmware.ColorTable::getColor($i).":".$this->fimwareMapper->getNameForCode($firmware);
+                $options[] = "STACK:".$firmware.ColorTable::getColor($i).":".$this->fimwareMapper->getNameForCode($firmware)."\l";
             //echo $firmware."<br>";
         }
         //print_r($options);
@@ -305,9 +307,9 @@ class System
             $hardware = $hardwareDS[$i];
             $options[] = "DEF:".$hardware."=".$this->rrdHardwareFile.":".$hardware.":AVERAGE";
             if($i == 0)
-                $options[] = "AREA:".$hardware.ColorTable::getColor($i).":".$this->hardwareMapper->getNameForCode($hardware);
+                $options[] = "AREA:".$hardware.ColorTable::getColor($i).":".$this->hardwareMapper->getNameForCode($hardware)."\l";
             else
-                $options[] = "STACK:".$hardware.ColorTable::getColor($i).":".$this->hardwareMapper->getNameForCode($hardware);
+                $options[] = "STACK:".$hardware.ColorTable::getColor($i).":".$this->hardwareMapper->getNameForCode($hardware)."\l";
         }
 
         RRD::createRRDGraph($this->getFileName("hardware", $start, $width, $height),$options);
