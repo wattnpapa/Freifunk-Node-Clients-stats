@@ -242,7 +242,7 @@ class System
             "--width",$width,
             "--height",$height,
             "--lower=0",
-            "DEF:clients=".$this->rrdFile.":clients:MIN",
+            "DEF:clients=".$this->rrdFile.":clients:AVERAGE",
             "AREA:clients#00FF00:Clients online",
         );
         RRD::createRRDGraph($this->getFileName("clients", $start, $width, $height),$options);
