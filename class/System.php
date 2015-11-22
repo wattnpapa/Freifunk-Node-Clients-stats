@@ -8,6 +8,7 @@
  */
 include("RRD.php");
 include("FirmwareRRDDSMapping.php");
+include("HardwareRRDDSMapping.php");
 include("ColorTable.php");
 
 class System
@@ -16,6 +17,7 @@ class System
     private $counterOnlineNodes;
     private $counterOfflineNodes;
     private $nodeFirmware;
+    private $nodeHardware;
     private $autoupdater;
 
     private $rrdFile;
@@ -32,13 +34,16 @@ class System
         $this->counterOnlineNodes = 0;
         $this->counterOfflineNodes = 0;
         $this->nodeFirmware = array();
+        $this->nodeHardware = array();
 
 
         $this->rrdFile = dirname(__FILE__)."/../rrdData/system/system.rrd";
         $this->rrdFirmwareFile = dirname(__FILE__)."/../rrdData/system/firmware.rrd";
+        $this->rrdHardwareFile = dirname(__FILE__)."/../rrdData/system/hardware.rrd";
         $this->graphFolder = dirname(__FILE__)."/../graphs/system/";
 
         $this->fimwareMapper = new FirmwareRRDDSMapping();
+        $this->hardwareMapper = new HardwareRRDDSMapping();
 
     }
 
@@ -71,8 +76,15 @@ class System
         $dataSources = array("DS:".$initCodeFirmware.":GAUGE:600:0:U",);
         $options = RRD::getRRDFileOptions($dataSources);
         RRD::createRRDFile($this->rrdFirmwareFile,$options);
-        print_r($options);
-        echo "\n\n\nFIRMWARE CREATED\n\n\n";
+    }
+
+    private function createHardwareRRDFile(){
+        echo "createHardwareRRD";
+        $initFirmware = "TP-Link TL-WR841N/ND v9";
+        $initCodeFirmware = $this->hardwareMapper->addNameToMapping($initFirmware);
+        $dataSources = array("DS:".$initCodeFirmware.":GAUGE:600:0:U",);
+        $options = RRD::getRRDFileOptions($dataSources);
+        RRD::createRRDFile($this->rrdHardwareFile,$options);
     }
 
     private function checkRRDFile(){
@@ -83,10 +95,13 @@ class System
         return file_exists($this->rrdFirmwareFile);
     }
 
+    private function checkHardwareRRDFile(){
+        return file_exists($this->rrdHardwareFile);
+    }
+
     public function getFileName($type, $interval, $width, $height){
         return dirname(__FILE__)."/../graphs/system/".$type."_".$interval."_".$width."_".$height.".png";
     }
-
 
     public function fillRRDData(){
         if(!$this->checkRRDFile()){
@@ -108,11 +123,11 @@ class System
         echo rrd_error();
 
         $this->fillFirmwareRRDData();
+        $this->fillHardwareRRDData();
     }
 
     public function fillFirmwareRRDData(){
         if(!$this->checkFirmwareRRDFile()){
-            echo "\n\nCreate FIRMWARE RRD\n\n";
             $this->createFirmwareRRDFile();
         }
 
@@ -141,6 +156,37 @@ class System
         echo rrd_error();
     }
 
+    public function fillHardwareRRDData(){
+        if(!$this->checkHardwareRRDFile()){
+            echo "create Hardware";
+            $this->createHardwareRRDFile();
+        }
+
+        $data = Array();
+        $data[] = time();
+
+        $hardwareDS = RRD::getDSFromRRDFile($this->rrdHardwareFile);
+        $tmphardware = array();
+        foreach ($this->nodeHardware as $key => $value){
+            $hardKey = $this->hardwareMapper->addNameToMapping($key);
+            if(!in_array($hardKey,$hardwareDS)){
+                $hardwareDS[] = $key;
+                RRD::addDS2RRDFile($this->rrdHardwareFile,$hardKey,"GAUGE",600,0,"U");
+            }
+            $tmphardware[$hardKey] = $value;
+        }
+
+        foreach($hardwareDS as $hard){
+            //echo $firm."\n";
+            $data[] = $tmphardware[$hard];
+        }
+
+        $string = implode(":",$data);
+
+        $ret = rrd_update($this->rrdHardwareFile, array($string));
+        echo rrd_error();
+    }
+
     public function makeGraph($type, $interval, $width, $height){
         if($this->checkReDrawGraph($this->getFileName($type,$interval, $width, $height))){
             switch ($type) {
@@ -152,6 +198,9 @@ class System
                     break;
                 case "firmware":
                     $this->createFirmwareGraph($interval, "Firmware Versions", $width, $height);
+                    break;
+                case "hardware":
+                    $this->createHardwareGraph($interval, "Hardware Models", $width, $height);
                     break;
             }
         }
@@ -224,6 +273,30 @@ class System
         //print_r($options);
 
         RRD::createRRDGraph($this->getFileName("firmware", $start, $width, $height),$options);
+    }
+
+    private function createHardwareGraph($start, $title, $width, $height) {
+        $options = array(
+            "--slope-mode",
+            "--start", "-".$start,
+            "--title=$title",
+            "--vertical-label=Hardware",
+            "--width",$width,
+            "--height",$height,
+            "--lower=0"
+        );
+        $hardwareDS = RRD::getDSFromRRDFile($this->rrdHardwareFile);
+        sort($hardwareDS);
+        for($i = 0;$i < count($hardwareDS); $i++){
+            $hardware = $hardwareDS[$i];
+            $options[] = "DEF:".$hardware."=".$this->rrdHardwareFile.":".$hardware.":AVERAGE";
+            if($i == 0)
+                $options[] = "AREA:".$hardware.ColorTable::getColor($i).":".$this->hardwareMapper->getNameForCode($hardware);
+            else
+                $options[] = "STACK:".$hardware.ColorTable::getColor($i).":".$this->hardwareMapper->getNameForCode($hardware);
+        }
+
+        RRD::createRRDGraph($this->getFileName("hardware", $start, $width, $height),$options);
     }
 
 
@@ -313,6 +386,15 @@ class System
         }
         else{
             $this->nodeFirmware[$firmware] = 1;
+        }
+    }
+
+    public function addNodeHardware($hardware){
+        if(isset($this->nodeHardware[$hardware])){
+            $this->nodeHardware[$hardware]++;
+        }
+        else{
+            $this->nodeHardware[$hardware] = 1;
         }
     }
 }

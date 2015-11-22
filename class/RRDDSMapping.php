@@ -6,7 +6,7 @@
  * Date: 14.11.15
  * Time: 15:22
  */
-abstract class FirmwareRRDDSMapping
+abstract class RRDDSMapping
 {
     protected $mapping;
     protected $mappingFile;
@@ -40,8 +40,9 @@ abstract class FirmwareRRDDSMapping
     }
 
     public function getCodeForName($name){
-        $pattern = "/([^a-zA-Z0-9]+)/";
-        $code = preg_replace($pattern,"_",$name);
+        //$pattern = "/([^a-zA-Z0-9]+)/";
+        //$code = preg_replace($pattern,"_",$name);
+        $code = md5($name);
         $code = substr($code,0,15);
         return $code;
     }

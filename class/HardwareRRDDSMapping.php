@@ -1,6 +1,6 @@
 <?php
 
-include("RRDDSMapping.php");
+include_once(dirname(__FILE__)."/RRDDSMapping.php");
 /**
  * Created by IntelliJ IDEA.
  * User: johannes
