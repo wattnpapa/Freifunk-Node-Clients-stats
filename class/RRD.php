@@ -81,6 +81,9 @@ class RRD
     }
 
     public static function createRRDGraph($filename,$options){
+        $config = json_decode(file_get_contents("config.json"),true);
+        $options[] = "--watermark";
+        $options[] = $config["communityName"]." - ".date("c");
         $ret = rrd_graph($filename,$options);
         echo rrd_error();
     }
