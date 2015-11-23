@@ -2,6 +2,9 @@
 
 include("class/Node.php");
 
+$delay=30; 
+header("Refresh: $delay;"); 
+
 $type = "System";
 $mac = "14cc2091ecd0";
 if(isset($_GET['type']))
