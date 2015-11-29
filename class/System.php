@@ -274,8 +274,9 @@ class System
             "--lower=0",
             "DEF:nodesOnline=".$this->rrdFile.":nodesOnline:AVERAGE",
             "DEF:nodesOffline=".$this->rrdFile.":nodesOffline:AVERAGE",
-            "AREA:nodesOffline#ff0000:nodesOffline",
-            "STACK:nodesOnline#00FF00:nodesOnline",
+            "AREA:nodesOnline#00FF00:nodesOnline",
+            "STACK:nodesOffline#ff0000:nodesOffline",
+
         );
         RRD::createRRDGraph($this->getFileName("nodes", $start, $width, $height),$options);
     }
