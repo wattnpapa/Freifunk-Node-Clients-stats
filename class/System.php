@@ -154,13 +154,14 @@ class System
                 $firmwareDS[] = $key;
                 RRD::addDS2RRDFile($this->rrdFirmwareFile,$firmKey,"GAUGE",600,0,"U");
             }
-            $tmpfirmware[$firmKey] = $value;
+            //$tmpfirmware[$firmKey] = $value;
+            $data[] = $value;
         }
 
-        foreach($firmwareDS as $firm){
+        /*foreach($firmwareDS as $firm){
             //echo $firm."\n";
             $data[] = $tmpfirmware[$firm];
-        }
+        }*/
 
         $string = implode(":",$data);
 
