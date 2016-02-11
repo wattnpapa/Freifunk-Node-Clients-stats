@@ -161,7 +161,22 @@ class Node
         else
             $mesh = "";
 
-        $network = new NodeNetwork($this->rawData['nodeinfo']['network']['addresses'],$this->rawData['nodeinfo']['network']['mesh_interfaces'],$this->rawData['nodeinfo']['network']['mac'],$mesh);
+        if(isset($this->rawData['nodeinfo']['network']['addresses']))
+            $addresses = $this->rawData['nodeinfo']['network']['addresses'];
+        else
+            $addresses = "";
+
+        if(isset($this->rawData['nodeinfo']['network']['mesh_interfaces']))
+            $meshInterfaces = $this->rawData['nodeinfo']['network']['mesh_interfaces'];
+        else
+            $meshInterfaces = "";
+
+        if(isset($this->rawData['nodeinfo']['network']['mac']))
+            $mac = $this->rawData['nodeinfo']['network']['mac'];
+        else
+            $mac = "";
+
+        $network = new NodeNetwork($addresses,$meshInterfaces,$mac,$mesh);
 
         $nodeinfo = new NodeInfo();
         $nodeinfo->setHostname($hostname);
