@@ -10,5 +10,10 @@ engines:
     config:
       languages:
       - php
+ratings:
+  paths:
+  - "**.css"
+  - "**.php"
+
 exclude_paths:
 - lib/*
