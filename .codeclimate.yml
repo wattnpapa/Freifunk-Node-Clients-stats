@@ -1,4 +1,7 @@
 languages:
   PHP: true
+engines:
+  csslint:
+    enabled: true
 exclude_paths:
 - lib/*
