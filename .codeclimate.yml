@@ -5,5 +5,10 @@ engines:
     enabled: true
   phpmd:
     enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - php
 exclude_paths:
 - lib/*
