@@ -2,6 +2,8 @@
 
 This project creates Freifunk Node Statistics on demand.
 
+[![Code Climate](https://codeclimate.com/github/PowerPan/Freifunk-Node-Clients-stats/badges/gpa.svg)](https://codeclimate.com/github/PowerPan/Freifunk-Node-Clients-stats)
+
 ## Examples System Stats
 
 ### Online Clients
