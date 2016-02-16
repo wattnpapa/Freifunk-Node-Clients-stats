@@ -3,5 +3,7 @@ languages:
 engines:
   csslint:
     enabled: true
+  phpcodesniffer:
+    enabled: true
 exclude_paths:
 - lib/*
