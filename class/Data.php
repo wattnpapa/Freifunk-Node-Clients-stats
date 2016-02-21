@@ -26,11 +26,15 @@ class Data
 
 
     private function catchData(){
-        //$this->dataRaw = file_get_contents($this->url);
-        
-        $this->dataRaw = $this->get_remote_data($this->url);
-        $this->dataClients = json_decode($this->dataRaw,true);
-        $this->parseData();
+        if(!is_array($this->url)){
+            $this->url = Array($this->url);
+        }
+        foreach($this->url as $url){
+            $this->dataRaw = $this->get_remote_data($url);
+            $this->dataClients = json_decode($this->dataRaw,true);
+            $this->parseData();
+        }
+        $this->system->fillRRDData();
 
     }
     
@@ -113,7 +117,6 @@ class Data
             $this->system->addMeshConnections(count($node->getNodeinfo()->getNetwork()->getMeshInterfaces()));
 
         }
-        $this->system->fillRRDData();
     }
 
     /**
