@@ -25,6 +25,7 @@ $system = new System();
 $system->makeGraph($type,$interval,$width,$height);
 
 $im = file_get_contents($system->getFileName($type,$interval,$width,$height));
-header('content-type: image/png');
+if(!isset($_GET['debug']))
+    header('content-type: image/png');
 echo $im; 
 ?>
