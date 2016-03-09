@@ -304,7 +304,7 @@ class System
             "GPRINT:clients:MIN: Minimum\:%8.0lf",
 
         );
-        RRD::createRRDGraph($this->getFileName("nodes", $start, $width, $height),$options);
+        RRD::createRRDGraph($this->getFileName("clientnodes", $start, $width, $height),$options);
     }
 
     private function createNodeGraph($start, $title, $width, $height) {
