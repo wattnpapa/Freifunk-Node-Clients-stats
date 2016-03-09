@@ -245,9 +245,10 @@ class System
             "--lower=0",
             "DEF:clients=".$this->rrdFile.":clients:AVERAGE",
             "AREA:clients#00FF00:Clients online",
-            "GPRINT:clients:LAST: Current\:%8.2lf %s",
-            //"GPRINT:clients:Average: Average\:%8.2lf %s",
-            //"GPRINT:clients:Maximum: Maximum\:%8.2lf %s",
+            "GPRINT:clients:LAST: Current\:%8.0lf",
+            "GPRINT:clients:AVERAGE: Average\:%8.0lf",
+            "GPRINT:clients:MAX: Maximum\:%8.0lf",
+            "GPRINT:clients:MIN: Minimum\:%8.0lf",
         );
         RRD::createRRDGraph($this->getFileName("clients", $start, $width, $height),$options);
     }
@@ -277,15 +278,17 @@ class System
             "--height",$height,
             "--lower=0",
             "DEF:nodesOnline=".$this->rrdFile.":nodesOnline:AVERAGE",
-            "GPRINT:clients:LAST:\" Current\:%8.2lf %s\"",
-            "GPRINT:clients:Average:\" Average\:%8.2lf %s\"",
-            "GPRINT:clients:Maximum:\" Maximum\:%8.2lf %s\"",
             "DEF:nodesOffline=".$this->rrdFile.":nodesOffline:AVERAGE",
-            "GPRINT:clients:LAST:\" Current\:%8.2lf %s\"",
-            "GPRINT:clients:Average:\" Average\:%8.2lf %s\"",
-            "GPRINT:clients:Maximum:\" Maximum\:%8.2lf %s\"",
             "AREA:nodesOnline#00FF00:nodesOnline",
+            "GPRINT:nodesOnline:LAST: Current\:%8.0lf",
+            "GPRINT:nodesOnline:AVERAGE: Average\:%8.0lf",
+            "GPRINT:nodesOnline:MAX: Maximum\:%8.0lf",
+            "GPRINT:nodesOnline:MIN: Minimum\:%8.0lf",
             "STACK:nodesOffline#ff0000:nodesOffline",
+            "GPRINT:nodesOffline:LAST: Current\:%8.0lf",
+            "GPRINT:nodesOffline:AVERAGE: Average\:%8.0lf",
+            "GPRINT:nodesOffline:MAX: Maximum\:%8.0lf",
+            "GPRINT:nodesOffline:MIN: Minimum\:%8.0lf",
 
         );
         RRD::createRRDGraph($this->getFileName("nodes", $start, $width, $height),$options);
