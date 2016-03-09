@@ -208,6 +208,9 @@ class System
                 case "nodes":
                     $this->createNodeGraph($interval, "Online/Offline Nodes", $width, $height);
                     break;
+                case "clientnodes":
+                    $this->createClientNodeGraph($interval, "Clients/Nodes", $width, $height);
+                    break;
                 case "firmware":
                     $this->createFirmwareGraph($interval, "Firmware Versions", $width, $height);
                     break;
@@ -266,6 +269,42 @@ class System
             "AREA:meshConnections#00FF00:Mesh Connections",
         );
         RRD::createRRDGraph($this->getFileName("meshConnections", $start, $width, $height),$options);
+    }
+
+    private function createClientNodeGraph($start, $title, $width, $height) {
+        $options = array(
+            "--slope-mode",
+            "--start", "-".$start,
+            "--title=$title",
+            "--vertical-label=Clients",
+            "--width",$width,
+            "--height",$height,
+            "--lower=0",
+            "DEF:nodesOnline=".$this->rrdFile.":nodesOnline:AVERAGE",
+            "DEF:nodesOffline=".$this->rrdFile.":nodesOffline:AVERAGE",
+            "DEF:clients=".$this->rrdFile.":clients:AVERAGE",
+            "AREA:nodesOnline#00FF00:nodesOnline",
+            "COMMENT:\t",
+            "GPRINT:nodesOnline:LAST: Current\:%8.0lf",
+            "GPRINT:nodesOnline:AVERAGE: Average\:%8.0lf",
+            "GPRINT:nodesOnline:MAX: Maximum\:%8.0lf",
+            "GPRINT:nodesOnline:MIN: Minimum\:%8.0lf",
+            "COMMENT:\l",
+            "AREA:nodesOffline#ff0000:nodesOffline:STACK",
+            "COMMENT:\t",
+            "GPRINT:nodesOffline:LAST:Current\:%8.0lf",
+            "GPRINT:nodesOffline:AVERAGE: Average\:%8.0lf",
+            "GPRINT:nodesOffline:MAX: Maximum\:%8.0lf",
+            "GPRINT:nodesOffline:MIN: Minimum\:%8.0lf",
+            "COMMENT:\l",
+            "LINE:clients#00FFFF:Clients online",
+            "GPRINT:clients:LAST: Current\:%8.0lf",
+            "GPRINT:clients:AVERAGE: Average\:%8.0lf",
+            "GPRINT:clients:MAX: Maximum\:%8.0lf",
+            "GPRINT:clients:MIN: Minimum\:%8.0lf",
+
+        );
+        RRD::createRRDGraph($this->getFileName("nodes", $start, $width, $height),$options);
     }
 
     private function createNodeGraph($start, $title, $width, $height) {
