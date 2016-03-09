@@ -283,7 +283,7 @@ class System
             "GPRINT:nodesOnline:LAST: Current\:%8.0lf",
             "GPRINT:nodesOnline:AVERAGE: Average\:%8.0lf",
             "GPRINT:nodesOnline:MAX: Maximum\:%8.0lf",
-            "GPRINT:nodesOnline:MIN: Minimum\:%8.0lf",
+            "GPRINT:nodesOnline:MIN: Minimum\:%8.0lf\n",
             "STACK:nodesOffline#ff0000:nodesOffline",
             "GPRINT:nodesOffline:LAST: Current\:%8.0lf",
             "GPRINT:nodesOffline:AVERAGE: Average\:%8.0lf",
