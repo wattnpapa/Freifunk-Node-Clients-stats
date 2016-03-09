@@ -280,15 +280,19 @@ class System
             "DEF:nodesOnline=".$this->rrdFile.":nodesOnline:AVERAGE",
             "DEF:nodesOffline=".$this->rrdFile.":nodesOffline:AVERAGE",
             "AREA:nodesOnline#00FF00:nodesOnline",
+            "COMMENT:\t",
             "GPRINT:nodesOnline:LAST: Current\:%8.0lf",
             "GPRINT:nodesOnline:AVERAGE: Average\:%8.0lf",
             "GPRINT:nodesOnline:MAX: Maximum\:%8.0lf",
-            "GPRINT:nodesOnline:MIN: Minimum\:%8.0lf\n",
-            "STACK:nodesOffline#ff0000:nodesOffline",
-            "GPRINT:nodesOffline:LAST: Current\:%8.0lf",
+            "GPRINT:nodesOnline:MIN: Minimum\:%8.0lf",
+            "COMMENT:\l",
+            "AREA:nodesOffline#ff0000:nodesOffline:STACK",
+            "COMMENT:\t",
+            "GPRINT:nodesOffline:LAST:Current\:%8.0lf",
             "GPRINT:nodesOffline:AVERAGE: Average\:%8.0lf",
             "GPRINT:nodesOffline:MAX: Maximum\:%8.0lf",
             "GPRINT:nodesOffline:MIN: Minimum\:%8.0lf",
+            "COMMENT:\l",
 
         );
         RRD::createRRDGraph($this->getFileName("nodes", $start, $width, $height),$options);
