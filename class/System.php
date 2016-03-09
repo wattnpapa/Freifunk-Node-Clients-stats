@@ -245,9 +245,9 @@ class System
             "--lower=0",
             "DEF:clients=".$this->rrdFile.":clients:AVERAGE",
             "AREA:clients#00FF00:Clients online",
-            "GPRINT:clients:LAST:\" Current\:%8.2lf %s\"",
-            "GPRINT:clients:Average:\" Average\:%8.2lf %s\"",
-            "GPRINT:clients:Maximum:\" Maximum\:%8.2lf %s\"",
+            "GPRINT:clients:LAST: Current\:%8.2lf %s",
+            //"GPRINT:clients:Average: Average\:%8.2lf %s",
+            //"GPRINT:clients:Maximum: Maximum\:%8.2lf %s",
         );
         RRD::createRRDGraph($this->getFileName("clients", $start, $width, $height),$options);
     }
