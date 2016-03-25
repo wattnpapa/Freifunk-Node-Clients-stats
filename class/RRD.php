@@ -47,16 +47,16 @@ class RRD
         $rrdOptions[] = "-r";
         $rrdOptions[] = $tmpFileName;
 
-        echo "\n\nUPDATE RRD\n\n";
+        /*echo "\n\nUPDATE RRD\n\n";
         print_r($rrdOptions);
         echo "\n\n+++++++++++\n\n";
         echo $rrdFileName;
         echo "\n\n###########\n\n";
         //create new RRDFile
-        //RRD::createRRDFile($rrdFileName,$rrdOptions);
+        //RRD::createRRDFile($rrdFileName,$rrdOptions);*/
         $cmd = "rrdcreate ".$rrdFileName." ".implode(" ",$rrdOptions);
-        echo $cmd;
-        echo "\n";
+        //echo $cmd;
+        //echo "\n";
         shell_exec($cmd);
     }
 
