@@ -70,7 +70,9 @@ class Node
         ////////
         if(isset($this->rawData['statistics']['traffic'])){
             $mgmtTx = new Traffic($this->rawData['statistics']['traffic']['mgmt_tx']['packets'],$this->rawData['statistics']['traffic']['mgmt_tx']['bytes']);
-            if(isset($this->rawData['statistics']['traffic']['forward'])) {
+            if(isset($this->rawData['statistics']['traffic']['forward'])
+                && isset($this->rawData['statistics']['traffic']['forward']['packets'])
+                && isset ($this->rawData['statistics']['traffic']['forward']['bytes'])) {
                 $forward = new Traffic($this->rawData['statistics']['traffic']['forward']['packets'], $this->rawData['statistics']['traffic']['forward']['bytes']);
             }
             else {

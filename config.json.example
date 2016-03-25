@@ -1,5 +1,5 @@
 {
   "communityName": "Freifunk Nordwest",
-  "meshviewerConfig" : "http://map.ffnw.de/config.json"
+  "meshviewerConfig" : "http://map.ffnw.de/config.json",
   "logoUrl" : "logo.png"
 }
