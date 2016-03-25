@@ -32,6 +32,7 @@ class Data
         foreach($this->url as $url){
             $this->dataRaw = $this->get_remote_data($url);
             $this->dataClients = json_decode($this->dataRaw,true);
+            echo $url;
             $this->parseData();
         }
         $this->system->fillRRDData();
