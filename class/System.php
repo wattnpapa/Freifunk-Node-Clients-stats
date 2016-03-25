@@ -85,7 +85,7 @@ class System
     }
 
     private function createHardwareRRDFile(){
-        echo "createHardwareRRD";
+        //echo "createHardwareRRD";
         $initFirmware = "TP-Link TL-WR841N/ND v9";
         $initCodeFirmware = $this->hardwareMapper->addNameToMapping($initFirmware);
         $dataSources = array("DS:".$initCodeFirmware.":GAUGE:600:0:U",);
@@ -129,7 +129,7 @@ class System
 
         $string = implode(":",$data);
 
-        echo $string;
+        //echo $string;
 
         $ret = rrd_update($this->rrdFile, array($string));
         echo rrd_error();
