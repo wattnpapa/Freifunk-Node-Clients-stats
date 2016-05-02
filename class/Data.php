@@ -33,14 +33,16 @@ class Data
         $this->dataClients = Array();
         foreach($this->url as $url){
             $this->dataRaw = $this->get_remote_data($url);
-            $this->addClients((json_decode($this->dataRaw,true))['nodes']);
+            $data = json_decode($this->dataRaw,true);
+            $this->addClients($data['nodes']);
         }
         $this->parseData();
         $this->system->fillRRDData();
 
     }
+
     
-    private functuion addClients($clients){
+    private function addClients($clients){
         foreach($clients as $nodeid => $nodedata){
             if(!in_array($nodeid,$this->dataClients)){
                 $this->dataClients[$nodeid] = $nodedata;
