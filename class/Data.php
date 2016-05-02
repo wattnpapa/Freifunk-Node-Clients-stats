@@ -8,6 +8,7 @@ class Data
 
     private $data;
     private $dataRaw;
+    private $dataClients;
     private $url;
     private $nodes;
     private $system;
@@ -29,14 +30,27 @@ class Data
         if(!is_array($this->url)){
             $this->url = Array($this->url);
         }
+        $this->dataClients = Array();
         foreach($this->url as $url){
             $this->dataRaw = $this->get_remote_data($url);
-            $this->dataClients = json_decode($this->dataRaw,true);
-            echo $url;
-            $this->parseData();
+            $this->addClients((json_decode($this->dataRaw,true))['nodes']);
         }
+        $this->parseData();
         $this->system->fillRRDData();
 
+    }
+    
+    private functuion addClients($clients){
+        foreach($clients as $nodeid => $nodedata){
+            if(!in_array($nodeid,$this->dataClients)){
+                $this->dataClients[$nodeid] = $nodedata;
+            }
+            else {
+                if($this->dataClients[$nodeid]['flags']['online'] == false){
+                    $this->dataClients[$nodeid] = $nodedata;
+                }
+            }
+        }
     }
     
     private function get_remote_data($url, $post_paramtrs=false) {   
@@ -99,7 +113,7 @@ class Data
 
     private function parseData(){
         $this->nodes = Array();
-        foreach($this->dataClients['nodes'] as $nodeData){
+        foreach($this->dataClients as $nodeData){
             $node = new Node();
             $node->setRawData(json_encode($nodeData));
             $node->parseRawData();
