@@ -36,11 +36,21 @@ class Data
             $data = json_decode($this->dataRaw,true);
             $this->addClients($data['nodes']);
         }
+        $this->saveNodeListJson();
         $this->parseData();
         $this->system->fillRRDData();
 
     }
-
+    
+    private function saveNodeListJson(){
+        $data = array();
+        $data['nodes'] = $this->dataClients;
+        $data['timestamp'] = date("c");
+        $data['version'] = 1;
+        $fd = fopen(dirname(__FILE__)."/../nodes.json", 'w');
+        fwrite($fd,json_encode($data));
+        fclose($fd);
+    }
     
     private function addClients($clients){
         foreach($clients as $nodeid => $nodedata){
