@@ -161,6 +161,8 @@ class Data
             $this->system->addNodeHardware($node->getNodeinfo()->getHardware()->getModel());
             $this->system->addMeshConnections(count($node->getNodeinfo()->getNetwork()->getMeshInterfaces()));
 
+            $this->nodes[] = $node;
+
         }
     }
 
