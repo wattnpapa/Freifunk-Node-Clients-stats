@@ -61,6 +61,23 @@ class Node
         $this->writeRawData($this->rawData['nodeinfo']['node_id']);
     }
 
+    /**
+     * @return array
+     */
+    public function getDataForNodeList(){
+        $data = array();
+        $data['id'] = $this->getNodeinfo()->getNodeId();
+        $data['nane'] = $this->getNodeinfo()->getHostname();
+        $data['position'] = array();
+        $data['position']['long'] =  $this->getNodeinfo()->getLocation()->getLongnitude();
+        $data['position']['lat'] =  $this->getNodeinfo()->getLocation()->getLatitude();
+        $data['status'] = array();
+        $data['status']['clients'] = $this->getStatistics()->getClients();
+        $data['status']['lastcontact'] = $this->getLastseen();
+        $data['status']['online'] = $this->getFlag()->getOnline();
+        return $data;
+    }
+
     public function parseRawData(){
 
         ////////
