@@ -10,6 +10,10 @@ class Data
     private $dataRaw;
     private $dataClients;
     private $url;
+
+    /**
+     * @var Node[]
+     */
     private $nodes;
     private $system;
 
@@ -36,18 +40,32 @@ class Data
             $data = json_decode($this->dataRaw,true);
             $this->addClients($data['nodes']);
         }
-        $this->saveNodeListJson();
+        $this->saveNodeListCombinedJson();
         $this->parseData();
         $this->system->fillRRDData();
+        $this->saveNodesListForFreifunkAPI();
 
     }
     
-    private function saveNodeListJson(){
+    private function saveNodeListCombinedJson(){
         $data = array();
         $data['nodes'] = $this->dataClients;
         $data['timestamp'] = date("c");
         $data['version'] = 1;
         $fd = fopen(dirname(__FILE__)."/../nodes.json", 'w');
+        fwrite($fd,json_encode($data));
+        fclose($fd);
+    }
+
+    private function saveNodesListForFreifunkAPI(){
+        $data = array();
+        $data['updated_at'] = date("c");
+        $data['version'] = "1.0.1";
+        $data['nodes'] = array();
+        foreach ($this->nodes as $node){
+            $data['nodes'][] = $node->getDataForNodeList();
+        }
+        $fd = fopen(dirname(__FILE__)."/../nodelst.json", 'w');
         fwrite($fd,json_encode($data));
         fclose($fd);
     }
