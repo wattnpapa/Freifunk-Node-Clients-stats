@@ -65,7 +65,7 @@ class Data
         foreach ($this->nodes as $node){
             $data['nodes'][] = $node->getDataForNodeList();
         }
-        $fd = fopen(dirname(__FILE__)."/../nodelst.json", 'w');
+        $fd = fopen(dirname(__FILE__)."/../nodelist.json", 'w');
         fwrite($fd,json_encode($data));
         fclose($fd);
     }
