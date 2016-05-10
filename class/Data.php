@@ -40,9 +40,9 @@ class Data
             $data = json_decode($this->dataRaw,true);
             $this->addClients($data['nodes']);
         }
-        $this->saveNodeListCombinedJson();
         $this->parseData();
         $this->system->fillRRDData();
+        $this->saveNodeListCombinedJson();
         $this->saveNodesListForFreifunkAPI();
 
     }
