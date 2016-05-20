@@ -72,7 +72,7 @@ class Data
     
     private function addClients($clients){
         foreach($clients as $nodeid => $nodedata){
-            if(!in_array($nodeid,$this->dataClients)){
+            if(!array_key_exists($nodeid,$this->dataClients)){
                 $this->dataClients[$nodeid] = $nodedata;
             }
             else {
