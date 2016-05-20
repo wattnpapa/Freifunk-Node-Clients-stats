@@ -134,8 +134,8 @@ class System
         $ret = rrd_update($this->rrdFile, array($string));
         echo rrd_error();
 
-        $this->fillFirmwareRRDData();
-        $this->fillHardwareRRDData();
+        //$this->fillFirmwareRRDData();
+        //$this->fillHardwareRRDData();
     }
 
     public function fillFirmwareRRDData(){
