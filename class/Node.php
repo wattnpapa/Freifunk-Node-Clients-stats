@@ -67,7 +67,7 @@ class Node
     public function getDataForNodeList(){
         $data = array();
         $data['id'] = $this->getNodeinfo()->getNodeId();
-        $data['nane'] = $this->getNodeinfo()->getHostname();
+        $data['name'] = $this->getNodeinfo()->getHostname();
         $data['position'] = array();
         $data['position']['long'] =  $this->getNodeinfo()->getLocation()->getLongnitude();
         $data['position']['lat'] =  $this->getNodeinfo()->getLocation()->getLatitude();
